@@ -1,4 +1,4 @@
-package jnu.edu;
+package edu.jnu;
 import  org.springframework.boot.SpringApplication;
 import  org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
