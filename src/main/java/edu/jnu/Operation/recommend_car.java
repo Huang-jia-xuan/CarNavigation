@@ -1,7 +1,7 @@
 package edu.jnu.Operation;
 
-
 import java.sql.*;
+import java.util.ArrayList;
 
 public class recommend_car{
     private static final String URL = "jdbc:mysql://localhost:3306/cardb"; // 数据库URL
@@ -12,7 +12,8 @@ public class recommend_car{
 
 
     //推荐车辆
-    public void recommend(int login_id) {
+    public ArrayList<Do> recommend(int login_id) {
+        ArrayList<Do> cars = new ArrayList<>();
         try (Connection conn = DriverManager.getConnection(URL, USER, PASSWORD)) {
             // 第一步：从用户表中查找该用户喜欢的车型和能源类型
             String userPreferenceSQL = "SELECT car_type, energytype FROM cars_recommendation WHERE id = ?";
@@ -31,7 +32,7 @@ public class recommend_car{
                         String carTable = "car_" + carType + "_" + energyType;  // 构建表名
 
                         // 构建查询 SQL，查找符合条件的车辆
-                        String querySQL = "SELECT car_name, min_price, max_price, rating FROM " + carTable
+                        String querySQL = "SELECT car_name, min_price, max_price, rating ,image FROM " + carTable
                                 + " WHERE min_price < max_price AND max_price > min_price" + " ORDER BY rating DESC";
 
                         try (PreparedStatement queryStmt = conn.prepareStatement(querySQL);
@@ -43,8 +44,10 @@ public class recommend_car{
                                 float minPrice = carRS.getFloat("min_price");
                                 float maxPrice = carRS.getFloat("max_price");
                                 float rating = carRS.getFloat("rating");
-
+                                String image= carRS.getString("image");
                                 System.out.println("推荐车型: " + carName + ", 价格区间: " + minPrice + " - " + maxPrice + ", 评分: " + rating);
+                                Do d= new Do(carName,minPrice,maxPrice,rating,image);
+                                cars.add(d);
                             }
 
                         } catch (SQLException e) {
@@ -61,28 +64,30 @@ public class recommend_car{
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        return cars;
     }
 
 
-
-
     //每次查询之后，Preference_type,preference_price_max,preference_price_min都要更改
-    public static void updateCarRecommendation(String string1, String string2, String string3) {
+    public static void updateCarRecommendation(String type, double minprice, double maxprice,String energy,int id) {
         // SQL 更新语句
         String updateSQL = "UPDATE cars_recommendation " +
-                "SET Preference_type = ?, " +
-                "preference_price_max = ?, " +
-                "preference_price_min = ? " +
-                "WHERE <your_condition>"; // 请替换<your_condition>为具体的查询条件
+                "SET car_type = ?, " +
+                "min_price = ?, " +
+                "max_price = ? " +
+                "energyType = ? "+
+                "WHERE id= ?"; // 请替换<your_condition>为具体的查询条件
 
         // 获取数据库连接并执行更新操作
         try (Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
              PreparedStatement stmt = conn.prepareStatement(updateSQL)) {
 
             // 设置 SQL 语句中的参数
-            stmt.setString(1, string1);  // 设置Preference_type
-            stmt.setString(2, string2);  // 设置preference_price_max
-            stmt.setString(3, string3);  // 设置preference_price_min
+            stmt.setString(1, type);  // 设置Preference_type
+            stmt.setDouble(2, minprice);
+            stmt.setDouble(3, maxprice);
+            stmt.setString(4, energy);  // 设置preference_price_max
+            stmt.setInt(5, id);  // 设置preference_price_min
 
             // 执行更新
             int rowsAffected = stmt.executeUpdate();
