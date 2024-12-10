@@ -1,4 +1,5 @@
 package edu.jnu.Operation;
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -203,14 +204,14 @@ public class BasicOperation {
     }
 
 
-    public void selectCarById(int carId, String type, String energyType) {
+    public Do selectCarById(int carId, String type, String energyType) {
         // 构建表名
         String tableName = "car_" + type + "_" + energyType;
 
         // 检查是否是合法的类型和能源类型
         if (!isValidType(type) || !isValidEnergyType(energyType)) {
             System.out.println("无效的类型或能源类型！");
-            return;
+            return null;
         }
 
         // 查询 SQL（去除 EnergyType 字段）
@@ -233,7 +234,7 @@ public class BasicOperation {
                     double maxPrice = rs.getDouble("Max_price");
                     float rating = rs.getFloat("rating");
                     String image = rs.getString("image");
-
+                    Do d =new Do(carName, minPrice, maxPrice, rating, image);
                     // 打印查询结果
                     System.out.println("CarId: " + id);
                     System.out.println("Car Name: " + carName);
@@ -241,6 +242,7 @@ public class BasicOperation {
                     System.out.println("Max Price: " + maxPrice);
                     System.out.println("Rating: " + rating);
                     System.out.println("Image: " + image);
+                    return d;
                 } else {
                     System.out.println("没有找到该CarId的记录！");
                 }
@@ -249,17 +251,18 @@ public class BasicOperation {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        return null;
     }
 
 
-    public void UserSelect(String type, String energyType, double minprice, double maxprice, String sortBy, String sortOrder) {
+    public ArrayList<Do> UserSelect(String type, String energyType, double minprice, double maxprice, String sortBy, String sortOrder) {
         // 设置默认的价格范围
         if (minprice == -1) minprice = 0;
         if (maxprice == -1) maxprice = Double.MAX_VALUE;
 
         // 用于存储拼接的表名，避免重复表名
         Set<String> tables = new HashSet<>();
-
+        ArrayList<Do> cars = new ArrayList<>();
         // 根据 type 和 energyType 动态拼接表名
         if (type == null || type.equals("sedan")) {
             if (energyType == null || energyType.equals("oil")) {
@@ -287,14 +290,14 @@ public class BasicOperation {
         }
 
         // 构建查询的表格部分，使用 UNION ALL 连接各表
-        StringBuilder sqlBuilder = new StringBuilder("SELECT Car_name, Min_price, Max_price, rating FROM (");
+        StringBuilder sqlBuilder = new StringBuilder("SELECT Car_name, Min_price, Max_price, rating, image FROM (");
         boolean first = true;
 
         for (String table : tables) {
             if (!first) {
                 sqlBuilder.append(" UNION ALL ");
             }
-            sqlBuilder.append("SELECT Car_name, Min_price, Max_price, rating FROM ").append(table);
+            sqlBuilder.append("SELECT Car_name, Min_price, Max_price, rating, image FROM ").append(table);
             first = false;
         }
 
@@ -324,17 +327,25 @@ public class BasicOperation {
             try (ResultSet rs = pstmt.executeQuery()) {
                 while (rs.next()) {
                     // 处理查询结果
-                    System.out.println("Car Name: " + rs.getString("Car_name"));
-                    System.out.println("Min Price: " + rs.getDouble("Min_price"));
-                    System.out.println("Max Price: " + rs.getDouble("Max_price"));
-                    System.out.println("Rating: " + rs.getDouble("rating"));
+                    String carName = rs.getString("Car_name");
+                    double minPrice = rs.getDouble("Min_price");
+                    double maxPrice = rs.getDouble("Max_price");
+                    float rating = rs.getFloat("rating");
+                    String image = rs.getString("image");
+                    System.out.println("Car Name: " + carName);
+                    System.out.println("Min Price: " + minPrice);
+                    System.out.println("Max Price: " + maxPrice);
+                    System.out.println("Rating: " + rating);
+                    Do d = new Do(carName, minPrice, maxPrice, rating, image);
                     // ... 其他字段
+                    cars.add(d);
                 }
             }
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        return cars;
     }
 
 
