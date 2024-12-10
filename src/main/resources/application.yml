@@ -17,3 +17,6 @@ spring:
       hibernate.dialect: org.hibernate.dialect.MySQL8Dialect
   application:
     name: CarNavigation
+security:
+  basic:
+    enabled: false
