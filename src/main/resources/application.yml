@@ -4,8 +4,8 @@ server:
     max-http-form-post-size: 100MB
 spring:
   datasource:
-    url: jdbc:mysql://127.0.0.1:3306/test?useUnicode=true&characterEncoding=utf8&characterSetResults=utf8&useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
-    username: car
+    url: jdbc:mysql://172.20.0.140:3306/cardb?useUnicode=true&characterEncoding=utf8&characterSetResults=utf8&useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+    username: huangjiaxuan
     password: root
     driver-class-name: com.mysql.cj.jdbc.Driver
 

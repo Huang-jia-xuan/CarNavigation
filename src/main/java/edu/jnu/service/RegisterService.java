@@ -31,7 +31,7 @@ public class RegisterService {
 //    private AddUserService addUserService;
 
     public boolean isExist(UserDTO tmpUser) {
-        UserAuth opUser = userAuthDao.findbyUserName(tmpUser.getUserName());
+        UserAuth opUser = userAuthDao.findByUserName(tmpUser.getUserName());
         return opUser != null;
     }
 

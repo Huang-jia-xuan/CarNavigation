@@ -10,7 +10,7 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class vehicalQueryDTO {
+public class vehicleQueryDTO {
     private List<String> type;
     private List<String> energyType;
     private int minPrice;
