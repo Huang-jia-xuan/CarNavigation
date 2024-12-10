@@ -1,9 +1,10 @@
 package edu.jnu.Operation;
 
+import edu.jnu.entity.Do;
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 public class BasicOperation {
@@ -255,7 +256,7 @@ public class BasicOperation {
     }
 
 
-    public ArrayList<Do> UserSelect(String type, String energyType, double minprice, double maxprice, String sortBy, String sortOrder) {
+    static public ArrayList<Do> UserSelect(String type, String energyType, double minprice, double maxprice, String sortBy, String sortOrder) {
         // 设置默认的价格范围
         if (minprice == -1) minprice = 0;
         if (maxprice == -1) maxprice = Double.MAX_VALUE;

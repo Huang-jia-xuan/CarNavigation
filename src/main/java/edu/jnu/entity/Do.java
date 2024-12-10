@@ -1,4 +1,4 @@
-package edu.jnu.Operation;
+package edu.jnu.entity;
 public class Do {
     private String Car_name;
     private double Min_price;

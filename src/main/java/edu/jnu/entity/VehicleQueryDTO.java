@@ -5,14 +5,13 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class vehicleQueryDTO {
-    private List<String> type;
-    private List<String> energyType;
+public class VehicleQueryDTO {
+    private String type;
+    private String energyType;
     private int minPrice;
     private int maxPrice;
     private String sortBy;

@@ -1,24 +1,23 @@
 package edu.jnu.service;
+import edu.jnu.Operation.BasicOperation;
 import org.json.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import edu.jnu.entity.vehicleQueryDTO;
+import edu.jnu.entity.VehicleQueryDTO;
 import org.json.JSONObject;
-
+import edu.jnu.entity.Do;
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class vehicleQueryService {
+public class VehicleQueryService {
 
-    public static vehicleQueryDTO parseFromJson(JSONObject jsonObject) {
+    public static VehicleQueryDTO parseFromJson(JSONObject jsonObject) {
         // Parse the type list
-        JSONArray typeArray = jsonObject.optJSONArray("type");
-        List<String> type = jsonArrayToList(typeArray);
+        String type = jsonObject.optString("type","");
 
         // Parse the energyType list
-        JSONArray energyTypeArray = jsonObject.optJSONArray("energyType");
-        List<String> energyType = jsonArrayToList(energyTypeArray);
+        String energyType = jsonObject.optString("energyType","");
 
         // Parse minPrice and maxPrice
         int minPrice = jsonObject.optInt("minPrice", 0); // Default to 0 if not present
@@ -28,7 +27,7 @@ public class vehicleQueryService {
         String sortBy = jsonObject.optString("sortBy", ""); // Default to empty string if not present
 
         // Create and return VehicleSearchCriteria object
-        return new vehicleQueryDTO(type, energyType, minPrice, maxPrice, sortBy);
+        return new VehicleQueryDTO(type, energyType, minPrice, maxPrice, sortBy);
     }
 
     private static List<String> jsonArrayToList(JSONArray jsonArray) {
@@ -39,5 +38,16 @@ public class vehicleQueryService {
             }
         }
         return list;
+    }
+
+    public ArrayList<Do> queryVehicleFromDataBase(VehicleQueryDTO vehicleQueryDTO){
+        return BasicOperation.UserSelect(
+                vehicleQueryDTO.getType(),
+                vehicleQueryDTO.getEnergyType(),
+                vehicleQueryDTO.getMinPrice(),
+                vehicleQueryDTO.getMaxPrice(),
+                vehicleQueryDTO.getSortBy(),
+                null
+        );
     }
 }
