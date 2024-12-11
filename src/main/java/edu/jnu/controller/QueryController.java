@@ -22,7 +22,7 @@ public class QueryController {
 
     @PostMapping("/query")
     public ResponseEntity<ArrayList<Do>> queryVehicle(@RequestBody JSONObject jsonObject){
-        VehicleQueryDTO vehicleQueryDTO = vehicleQueryService.parseFromJson(jsonObject);
+        VehicleQueryDTO vehicleQueryDTO = VehicleQueryService.parseFromJson(jsonObject);
         ArrayList<Do> result = vehicleQueryService.queryVehicleFromDataBase(vehicleQueryDTO);
         if(!result.isEmpty()){
             return ResponseEntity.ok().body(result);

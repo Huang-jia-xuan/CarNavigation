@@ -9,8 +9,8 @@ import java.util.Set;
 
 public class BasicOperation {
 
-    private static final String URL = "jdbc:mysql://localhost:3306/cardb";
-    private static final String USER = "root";
+    private static final String URL = "jdbc:mysql://172.20.0.140:3306/cardb";
+    private static final String USER = "huangjiaxuan";
     private static final String PASSWORD = "root";
 
 
@@ -18,7 +18,7 @@ public class BasicOperation {
 
     private Connection getConnection() throws SQLException {
         // 连接数据库的代码（你可以根据你的数据库连接设置修改）
-        return DriverManager.getConnection("jdbc:mysql://localhost:3306/cardb", "root", "root");
+        return DriverManager.getConnection("jdbc:mysql://172.20.0.140:3306/cardb", "huangjiaxuan", "root");
     }
 
 
