@@ -78,8 +78,7 @@ body {
     transition: opacity 0.5s ease, visibility 0.5s ease; /* 添加过渡效果 */
 }
 
-.dropdown1:hover .dropdown-content,
-.dropdown2:hover .dropdown-content {
+.dropdown1:hover .dropdown-content{
     display: block;
     opacity: 1;
     visibility: visible;
@@ -173,8 +172,7 @@ body {
     display: inline-block;
 }
 
-.dropdown1:hover .dropdown-content,
-.dropdown2:hover .dropdown-content{
+.dropdown1:hover .dropdown-content{
     display: block;
     opacity: 1;
     visibility: visible;
@@ -193,7 +191,7 @@ body {
 .price-input-container {
     display: inline-flex;
     align-items: center;
-    border: 0;
+    border: none;
     border-radius: 5px; /* 添加圆角 */
 }
 
@@ -225,4 +223,22 @@ body {
 .search-form button:hover {
     background-color: #dccd66; /* 鼠标悬停时的背景颜色 */
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);/*鼠标悬停时阴影加深*/
+}
+#topBtn {
+    display: none; /* 初始隐藏 */
+    position: fixed;
+    bottom: 20px;
+    right: 10px;
+    z-index: 99; /* 确保按钮在最上层 */
+    border: none;
+    outline: none;
+    background-color: #555;
+    color: white;
+    cursor: pointer;
+    padding: 15px;
+    border-radius: 10px;
+}
+
+#topBtn:hover {
+    background-color: #333;
 }

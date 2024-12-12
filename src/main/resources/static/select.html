@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Vehicle Query</title>
+    <title>车辆查询</title>
     <link rel="stylesheet" href="./css/select.css">
 </head>
 <body>
@@ -19,12 +19,7 @@
         </li>
         <li><a href="index.html">首页</a></li>
         <li class="dropdown2">
-            <a href="#">销量</a>
-            <div class="dropdown-content">
-                <a href="20-40.html">20-40万</a>
-                <a href="40-80.html">40-80万</a>
-                <a href="up80.html">80万以上</a>
-            </div>
+            <a href="select.html">查询</a>
         </li>
         <li class="dropdown4">
             <a href="#">登录</a>
@@ -86,11 +81,11 @@
     <table id="resultsTable">
         <thead>
         <tr>
-            <th>车名</th>
+            <th>车型图片</th>
+            <th>车型名称</th>
+            <th>车辆评分</th>
             <th>最低价格</th>
             <th>最高价格</th>
-            <th>评分</th>
-            <th>图片</th>
         </tr>
         </thead>
         <tbody>
@@ -98,7 +93,7 @@
     </table>
     <div id="no-results" style="display: none;">没有找到符合条件的车辆。</div>
 </div>
-
-<script src="script.js"></script>
-</body>
+    <button onclick="topFunction()" id="topBtn" title="返回顶部">返回顶部</button>
+    <script src="./js/select.js"></script>
+    </body>
 </html>

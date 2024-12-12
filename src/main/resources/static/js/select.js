@@ -2,7 +2,27 @@
 function convertPriceToInteger(price) {
     return Math.round(price * 10000);
 }
+// 获取按钮元素
+const mybutton = document.getElementById("topBtn");
 
+// 当用户滚动超过 20px 时显示按钮
+window.onscroll = function() {
+    scrollFunction();
+};
+
+function scrollFunction() {
+    if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+        mybutton.style.display = "block";
+    } else {
+        mybutton.style.display = "none";
+    }
+}
+
+// 当用户点击按钮时，返回页面顶部
+function topFunction() {
+    document.body.scrollTop = 0; // For Safari
+    document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
+}
 document.getElementById('searchButton').addEventListener('click', function() {
     // 1. 获取用户选择的查询条件
     const type = document.getElementById('type').value;
@@ -19,8 +39,8 @@ document.getElementById('searchButton').addEventListener('click', function() {
     const queryData = {
         type: type,
         energyType: energyType,
-        minPrice: minPrice,
-        maxPrice: maxPrice,
+        minPrice: minPriceInt,
+        maxPrice: maxPriceInt,
         sortBy: sortBy,
     };
     if (sortOrder) {
@@ -46,7 +66,7 @@ document.getElementById('searchButton').addEventListener('click', function() {
             }
         })
         .then(data => {
-            // 4. 处理返回的数据并更新页面
+            // 5. 处理返回的数据并更新页面
             const tableBody = document.getElementById('resultsTable').getElementsByTagName('tbody')[0];
             tableBody.innerHTML = ''; // 清空表格
 
@@ -56,21 +76,22 @@ document.getElementById('searchButton').addEventListener('click', function() {
                 document.getElementById('no-results').style.display = 'none';
                 data.forEach(car => {
                     const row = tableBody.insertRow();
+                    const imageCell = row.insertCell();
                     const nameCell = row.insertCell();
+                    const ratingCell = row.insertCell();
                     const minPriceCell = row.insertCell();
                     const maxPriceCell = row.insertCell();
-                    const ratingCell = row.insertCell();
-                    const imageCell = row.insertCell();
 
-                    nameCell.textContent = car.carName;
-                    minPriceCell.textContent = car.minPrice;
-                    maxPriceCell.textContent = car.maxPrice;
-                    ratingCell.textContent = car.rating;
-
+                    // 创建图片元素并设置属性
                     const img = document.createElement('img');
-                    img.src = car.image;
+                    img.src = car.imageUrl;
                     img.alt = car.carName;
                     imageCell.appendChild(img);
+
+                    nameCell.textContent = car.carName;
+                    ratingCell.textContent = car.rating;
+                    minPriceCell.textContent = car.minPrice;
+                    maxPriceCell.textContent = car.maxPrice;
                 });
             }
         })
