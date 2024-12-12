@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Vehicle Query</title>
+    <link rel="stylesheet" href="./css/select.css">
+</head>
+<body>
+<div class="site-name">汽 车 导 航 网</div>
+<div class="navbar">
+    <ul>
+        <li class="dropdown1">
+            <a href="#">车型</a>
+            <div class="dropdown-content">
+                <a href="jiaoche.html">轿车</a>
+                <a href="SUV.html">SUV</a>
+                <a href="MPV.html">MPV</a>
+            </div>
+        </li>
+        <li><a href="index.html">首页</a></li>
+        <li class="dropdown2">
+            <a href="#">销量</a>
+            <div class="dropdown-content">
+                <a href="20-40.html">20-40万</a>
+                <a href="40-80.html">40-80万</a>
+                <a href="up80.html">80万以上</a>
+            </div>
+        </li>
+        <li class="dropdown4">
+            <a href="#">登录</a>
+            <div class="dropdown-content">
+                <a href="login.html">账户登录</a>
+                <a href="register.html">注册账户</a>
+            </div>
+        </li>
+    </ul>
+</div>
+
+<div class="search-form">
+    <label for="type">车型:</label>
+    <select id="type">
+        <option value="">Any</option>
+        <option value="sedan">轿车</option>
+        <option value="mpv">MPV</option>
+        <option value="suv">SUV</option>
+    </select>
+
+    <label for="energyType">能源类型:</label>
+    <select id="energyType">
+        <option value="">Any</option>
+        <option value="oil">燃油</option>
+        <option value="electric">电动</option>
+    </select>
+
+    <label for="minPrice">最低价格:</label>
+    <div class="price-input-container">
+        <input type="number" id="minPrice" value="0">
+        <span>万</span>
+    </div>
+
+    <label for="maxPrice">最高价格:</label>
+    <div class="price-input-container">
+        <input type="number" id="maxPrice" value="1000">
+        <span>万</span>
+    </div>
+
+    <label for="sortBy">排序方式:</label>
+    <select id="sortBy">
+        <option value="">None</option>
+        <option value="price">价格</option>
+        <option value="rating">评分</option>
+    </select>
+
+    <label for="sortOrder">排序顺序:</label>
+    <select id="sortOrder">
+        <option value="">None</option>
+        <option value="ASK">升序</option>
+        <option value="DESC">降序</option>
+    </select>
+
+    <button id="searchButton">查询</button>
+</div>
+
+<div class="results">
+    <h2>查询结果</h2>
+    <table id="resultsTable">
+        <thead>
+        <tr>
+            <th>车名</th>
+            <th>最低价格</th>
+            <th>最高价格</th>
+            <th>评分</th>
+            <th>图片</th>
+        </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+    <div id="no-results" style="display: none;">没有找到符合条件的车辆。</div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
