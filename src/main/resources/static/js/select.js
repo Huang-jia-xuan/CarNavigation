@@ -23,76 +23,83 @@ function topFunction() {
     document.body.scrollTop = 0; // For Safari
     document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
 }
-document.getElementById('searchButton').addEventListener('click', function() {
-    // 1. 获取用户选择的查询条件
-    const type = document.getElementById('type').value;
-    const energyType = document.getElementById('energyType').value;
-    const minPrice = parseInt(document.getElementById('minPrice').value);
-    const maxPrice = parseInt(document.getElementById('maxPrice').value);
-    const sortBy = document.getElementById('sortBy').value;
+document.getElementById("searchButton").addEventListener("click", function() {
+    // 获取表单输入值
+    const type = document.getElementById("type").value;
+    const energyType = document.getElementById("energyType").value;
+    const minPrice = document.getElementById("minPrice").value;
+    const maxPrice = document.getElementById("maxPrice").value;
+    const sortBy = document.getElementById("sortBy").value;
 
-    // 2. 转换价格为整数
-    const minPriceInt = convertPriceToInteger(minPrice);
-    const maxPriceInt = convertPriceToInteger(maxPrice);
-    // 2. 构建查询条件的 JSON 对象
-    const queryData = {
+    // 创建查询条件对象
+    const queryParams = {
         type: type,
         energyType: energyType,
-        minPrice: minPriceInt,
-        maxPrice: maxPriceInt,
-        sortBy: sortBy,
+        minPrice: minPrice,
+        maxPrice: maxPrice,
+        sortBy: sortBy
     };
 
-    // 3. 发送 AJAX 请求到后端 API
-    fetch('/query', { // 假设你的后端 API 端点是 /query, 使用POST
+    // 发起请求到后端
+    fetch('/query', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify(queryData)
+        body: JSON.stringify(queryParams)
     })
         .then(response => {
-            if (response.status === 204) {
-                // 处理没有内容的情况
-                return [];
-            } else if (response.ok) {
-                return response.json();
-            } else {
-                throw new Error('Request failed with status: ' + response.status);
+            // 检查是否响应为空
+            if (!response.ok) {
+                throw new Error("请求失败，状态码：" + response.status);
             }
+            return response.json();  // 解析 JSON 数据
         })
         .then(data => {
-            // 5. 处理返回的数据并更新页面
-            const tableBody = document.getElementById('resultsTable').getElementsByTagName('tbody')[0];
-            tableBody.innerHTML = ''; // 清空表格
+            console.log('返回的数据:', data);  // 打印数据
+            // 获取结果表格的 tbody 部分
+            const resultsTable = document.getElementById("resultsTable").getElementsByTagName('tbody')[0];
+            // 清空表格
+            resultsTable.innerHTML = '';
 
+            // 如果没有结果，显示提示信息
             if (data.length === 0) {
-                document.getElementById('no-results').style.display = 'block';
+                document.getElementById("no-results").style.display = 'block';
+                return;
             } else {
-                document.getElementById('no-results').style.display = 'none';
-                data.forEach(car => {
-                    const row = tableBody.insertRow();
-                    const imageCell = row.insertCell();
-                    const nameCell = row.insertCell();
-                    const ratingCell = row.insertCell();
-                    const minPriceCell = row.insertCell();
-                    const maxPriceCell = row.insertCell();
-
-                    // 创建图片元素并设置属性
-                    const img = document.createElement('img');
-                    img.src = car.imageUrl;
-                    img.alt = car.carName;
-                    imageCell.appendChild(img);
-
-                    nameCell.textContent = car.carName;
-                    ratingCell.textContent = car.rating;
-                    minPriceCell.textContent = car.minPrice;
-                    maxPriceCell.textContent = car.maxPrice;
-                });
+                document.getElementById("no-results").style.display = 'none';
             }
+
+            // 遍历返回的数据并将每一项插入到表格中
+            data.forEach(vehicle => {
+                const row = resultsTable.insertRow();
+
+                // 添加车辆图片列
+                const imageCell = row.insertCell(0);
+                const image = document.createElement('img');
+                image.src = vehicle.image;
+                image.alt = vehicle.carName;
+                image.width = 100;  // 设置图片宽度
+                imageCell.appendChild(image);
+
+                // 添加车辆名称列
+                const nameCell = row.insertCell(1);
+                nameCell.textContent = vehicle.carName;
+
+                // 添加车辆评分列
+                const ratingCell = row.insertCell(2);
+                ratingCell.textContent = vehicle.rating;
+
+                // 添加最低价格列
+                const minPriceCell = row.insertCell(3);
+                minPriceCell.textContent = vehicle.minPrice + ' 万';
+
+                // 添加最高价格列
+                const maxPriceCell = row.insertCell(4);
+                maxPriceCell.textContent = vehicle.maxPrice + ' 万';
+            });
         })
         .catch(error => {
-            console.error('Error:', error);
-            // 可以添加代码来显示错误信息给用户
+            console.error('查询车辆时出错:', error);
         });
 });
