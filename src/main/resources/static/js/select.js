@@ -30,7 +30,6 @@ document.getElementById('searchButton').addEventListener('click', function() {
     const minPrice = parseInt(document.getElementById('minPrice').value);
     const maxPrice = parseInt(document.getElementById('maxPrice').value);
     const sortBy = document.getElementById('sortBy').value;
-    const sortOrder = document.getElementById('sortOrder').value;
 
     // 2. 转换价格为整数
     const minPriceInt = convertPriceToInteger(minPrice);
@@ -43,9 +42,6 @@ document.getElementById('searchButton').addEventListener('click', function() {
         maxPrice: maxPriceInt,
         sortBy: sortBy,
     };
-    if (sortOrder) {
-        queryData.sortOrder = sortOrder;
-    }
 
     // 3. 发送 AJAX 请求到后端 API
     fetch('/query', { // 假设你的后端 API 端点是 /query, 使用POST
