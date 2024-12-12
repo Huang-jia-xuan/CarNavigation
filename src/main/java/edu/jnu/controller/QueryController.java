@@ -1,5 +1,6 @@
 package edu.jnu.controller;
 import edu.jnu.entity.Do;
+import edu.jnu.entity.VehicleQueryByIdDTO;
 import edu.jnu.entity.VehicleQueryDTO;
 import edu.jnu.service.VehicleQueryService;
 import lombok.extern.slf4j.Slf4j;
@@ -25,6 +26,17 @@ public class QueryController {
         VehicleQueryDTO vehicleQueryDTO = VehicleQueryService.parseFromJson(jsonObject);
         ArrayList<Do> result = vehicleQueryService.queryVehicleFromDataBase(vehicleQueryDTO);
         if(!result.isEmpty()){
+            return ResponseEntity.ok().body(result);
+        }
+        else{
+            return ResponseEntity.noContent().build();
+        }
+    }
+    @PostMapping("/queryById")
+    public ResponseEntity<Do> queryVehicleById(@RequestBody JSONObject jsonObject){
+        VehicleQueryByIdDTO vehicleQueryByIdDTO = vehicleQueryService.parseFromJson2(jsonObject);
+        Do result = vehicleQueryService.queryVehicleFromDataBaseById(vehicleQueryByIdDTO);
+        if(result!=null){
             return ResponseEntity.ok().body(result);
         }
         else{
