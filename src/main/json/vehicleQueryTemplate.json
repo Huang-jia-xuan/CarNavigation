@@ -1,0 +1,7 @@
+{
+  "type": "['sedan','mpv','suv',null]",
+  "energyType": "['oil','electric',null]",
+  "minPrice": "int",
+  "maxPrice": "int",
+  "sortBy": "['ASK','DESC']"
+}

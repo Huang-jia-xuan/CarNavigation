@@ -5,7 +5,7 @@ import org.json.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import edu.jnu.entity.VehicleQueryDTO;
-import org.json.JSONObject;
+import com.alibaba.fastjson2.JSONObject;
 import edu.jnu.entity.Do;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,12 +14,12 @@ import java.util.List;
 public class VehicleQueryService {
 
     public static VehicleQueryByIdDTO parseFromJson2(JSONObject jsonObject) {
-        int id = jsonObject.optInt("id", 0);
+        int id = jsonObject.getIntValue("id",0);
         // Parse the type list
-        String type = jsonObject.optString("type","");
+        String type = jsonObject.getString("type");
 
         // Parse the energyType list
-        String energyType = jsonObject.optString("energyType","");
+        String energyType = jsonObject.getString("energyType");
 
 
         // Create and return VehicleSearchCriteria object
@@ -28,17 +28,17 @@ public class VehicleQueryService {
 
     public static VehicleQueryDTO parseFromJson(JSONObject jsonObject) {
         // Parse the type list
-        String type = jsonObject.optString("type","");
+        String type = jsonObject.getString("type");
 
         // Parse the energyType list
-        String energyType = jsonObject.optString("energyType","");
+        String energyType = jsonObject.getString("energyType");
 
         // Parse minPrice and maxPrice
-        int minPrice = jsonObject.optInt("minPrice", 0); // Default to 0 if not present
-        int maxPrice = jsonObject.optInt("maxPrice", Integer.MAX_VALUE); // Default to Integer.MAX_VALUE if not present
+        int minPrice = jsonObject.getIntValue("minPrice",0); // Default to 0 if not present
+        int maxPrice = jsonObject.getIntValue("maxPrice",Integer.MAX_VALUE); // Default to Integer.MAX_VALUE if not present
 
         // Parse sortBy
-        String sortBy = jsonObject.optString("sortBy", ""); // Default to empty string if not present
+        String sortBy = jsonObject.getString("sortBy"); // Default to empty string if not present
 
         // Create and return VehicleSearchCriteria object
         return new VehicleQueryDTO(type, energyType, minPrice, maxPrice, sortBy);

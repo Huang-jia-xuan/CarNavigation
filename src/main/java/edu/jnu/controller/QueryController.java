@@ -4,7 +4,7 @@ import edu.jnu.entity.VehicleQueryByIdDTO;
 import edu.jnu.entity.VehicleQueryDTO;
 import edu.jnu.service.VehicleQueryService;
 import lombok.extern.slf4j.Slf4j;
-import org.json.JSONObject;
+import com.alibaba.fastjson2.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
@@ -22,7 +22,8 @@ public class QueryController {
     private VehicleQueryService vehicleQueryService;
 
     @PostMapping("/query")
-    public ResponseEntity<ArrayList<Do>> queryVehicle(@RequestBody JSONObject jsonObject){
+    public ResponseEntity<ArrayList<Do>> queryVehicle(@RequestBody String jsonString){
+        JSONObject jsonObject = JSONObject.parseObject(jsonString);
         VehicleQueryDTO vehicleQueryDTO = VehicleQueryService.parseFromJson(jsonObject);
         ArrayList<Do> result = vehicleQueryService.queryVehicleFromDataBase(vehicleQueryDTO);
         if(!result.isEmpty()){
@@ -33,8 +34,9 @@ public class QueryController {
         }
     }
     @PostMapping("/queryById")
-    public ResponseEntity<Do> queryVehicleById(@RequestBody JSONObject jsonObject){
-        VehicleQueryByIdDTO vehicleQueryByIdDTO = vehicleQueryService.parseFromJson2(jsonObject);
+    public ResponseEntity<Do> queryVehicleById(@RequestBody String jsonString){
+        JSONObject jsonObject = JSONObject.parseObject(jsonString);
+        VehicleQueryByIdDTO vehicleQueryByIdDTO = VehicleQueryService.parseFromJson2(jsonObject);
         Do result = vehicleQueryService.queryVehicleFromDataBaseById(vehicleQueryByIdDTO);
         if(result!=null){
             return ResponseEntity.ok().body(result);
