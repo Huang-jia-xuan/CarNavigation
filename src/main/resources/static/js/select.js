@@ -25,12 +25,20 @@ function topFunction() {
 }
 document.getElementById("searchButton").addEventListener("click", function() {
     // 获取表单输入值
-    const type = document.getElementById("type").value;
-    const energyType = document.getElementById("energyType").value;
+    let type = document.getElementById("type").value;
+    let energyType = document.getElementById("energyType").value;
     const minPrice = document.getElementById("minPrice").value;
     const maxPrice = document.getElementById("maxPrice").value;
-    const sortBy = document.getElementById("sortBy").value;
-
+    let sortBy = document.getElementById("sortBy").value;
+    if (type === "") {
+        type = null; // 将空字符串转为 null
+    }
+    if (energyType === "") {
+        energyType = null; // 将空字符串转为 null
+    }
+    if (sortBy === "") {
+        sortBy = null; // 将空字符串转为 null
+    }
     // 创建查询条件对象
     const queryParams = {
         type: type,
@@ -39,7 +47,7 @@ document.getElementById("searchButton").addEventListener("click", function() {
         maxPrice: maxPrice,
         sortBy: sortBy
     };
-
+    console.log(JSON.stringify(queryParams));
     // 发起请求到后端
     fetch('/query', {
         method: 'POST',
@@ -78,25 +86,25 @@ document.getElementById("searchButton").addEventListener("click", function() {
                 const imageCell = row.insertCell(0);
                 const image = document.createElement('img');
                 image.src = vehicle.image;
-                image.alt = vehicle.carName;
-                image.width = 100;  // 设置图片宽度
+                image.alt = vehicle.car_name;
+                image.width = 200;  // 设置图片宽度
                 imageCell.appendChild(image);
 
                 // 添加车辆名称列
                 const nameCell = row.insertCell(1);
-                nameCell.textContent = vehicle.carName;
-
+                nameCell.textContent = vehicle.car_name;
+                nameCell.width = 200;
                 // 添加车辆评分列
                 const ratingCell = row.insertCell(2);
                 ratingCell.textContent = vehicle.rating;
 
                 // 添加最低价格列
                 const minPriceCell = row.insertCell(3);
-                minPriceCell.textContent = vehicle.minPrice + ' 万';
+                minPriceCell.textContent = vehicle.min_price + ' 万';
 
                 // 添加最高价格列
                 const maxPriceCell = row.insertCell(4);
-                maxPriceCell.textContent = vehicle.maxPrice + ' 万';
+                maxPriceCell.textContent = vehicle.max_price + ' 万';
             });
         })
         .catch(error => {

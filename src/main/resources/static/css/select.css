@@ -157,8 +157,8 @@ body {
 }
 
 .results img {
-    max-width: 100px;
-    max-height: 100px;
+    max-width: 200px;
+    max-height: 200px;
 }
 
 #no-results {
@@ -231,7 +231,7 @@ body {
     right: 10px;
     z-index: 99; /* 确保按钮在最上层 */
     border: none;
-    outline: none;
+    outline: none; ]9
     background-color: #555;
     color: white;
     cursor: pointer;
@@ -242,3 +242,4 @@ body {
 #topBtn:hover {
     background-color: #333;
 }
+
