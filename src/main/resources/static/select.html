@@ -58,14 +58,18 @@
         <input type="number" id="maxPrice" value="1000">
         <span>万</span>
     </div>
-
-    <label for="sortBy">排序方式:</label>
+    <label for="sortBy">根据:</label>
     <select id="sortBy">
         <option value="">None</option>
-        <option value="ASK">升序</option>
+        <option value="price">价格</option>
+        <option value="rating">评分</option>
+    </select>
+    <label for="sortOrder">排序方式:</label>
+    <select id="sortOrder">
+        <option value="">None</option>
+        <option value="ASC">升序</option>
         <option value="DESC">降序</option>
     </select>
-
     <button id="searchButton">查询</button>
 </div>
 

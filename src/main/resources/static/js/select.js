@@ -30,6 +30,7 @@ document.getElementById("searchButton").addEventListener("click", function() {
     const minPrice = document.getElementById("minPrice").value;
     const maxPrice = document.getElementById("maxPrice").value;
     let sortBy = document.getElementById("sortBy").value;
+    const sortOrder = document.getElementById("sortOrder").value;
     if (type === "") {
         type = null; // 将空字符串转为 null
     }
@@ -45,7 +46,8 @@ document.getElementById("searchButton").addEventListener("click", function() {
         energyType: energyType,
         minPrice: minPrice,
         maxPrice: maxPrice,
-        sortBy: sortBy
+        sortBy: sortBy,
+        sortOrder: sortOrder
     };
     console.log(JSON.stringify(queryParams));
     // 发起请求到后端

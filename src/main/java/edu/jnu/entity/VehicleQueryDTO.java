@@ -15,6 +15,7 @@ public class VehicleQueryDTO {
     private int minPrice;
     private int maxPrice;
     private String sortBy;
+    private String sortOrder;
 
     @Override
     public String toString() {
@@ -23,7 +24,8 @@ public class VehicleQueryDTO {
                 ", energyType=" + energyType +
                 ", minPrice=" + minPrice +
                 ", maxPrice=" + maxPrice +
-                ", sortBy='" + sortBy + '\'' +
+                ", sortBy='" + sortBy +
+                ", sortBy='" + sortOrder +'\'' +
                 '}';
     }
 }

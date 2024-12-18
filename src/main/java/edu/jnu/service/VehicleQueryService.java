@@ -41,7 +41,8 @@ public class VehicleQueryService {
         String sortBy = jsonObject.getString("sortBy"); // Default to empty string if not present
 
         // Create and return VehicleSearchCriteria object
-        return new VehicleQueryDTO(type, energyType, minPrice, maxPrice, sortBy);
+        String sortOrder = jsonObject.getString("sortOrder");;
+        return new VehicleQueryDTO(type, energyType, minPrice, maxPrice, sortBy, sortOrder);
     }
 
     private static List<String> jsonArrayToList(JSONArray jsonArray) {
@@ -61,7 +62,7 @@ public class VehicleQueryService {
                 vehicleQueryDTO.getMinPrice(),
                 vehicleQueryDTO.getMaxPrice(),
                 vehicleQueryDTO.getSortBy(),
-                null
+                vehicleQueryDTO.getSortOrder()
         );
     }
     public Do queryVehicleFromDataBaseById(VehicleQueryByIdDTO vehicleQueryByIdDTO){

@@ -5,6 +5,7 @@ import edu.jnu.entity.Do;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 public class BasicOperation {
@@ -18,7 +19,7 @@ public class BasicOperation {
 
     private Connection getConnection() throws SQLException {
         // 连接数据库的代码（你可以根据你的数据库连接设置修改）
-        return DriverManager.getConnection("jdbc:mysql://172.20.0.140:3306/cardb", "huangjiaxuan", "root");
+        return DriverManager.getConnection("jdbc:mysql://localhost:3306/cardb", "root", "root");
     }
 
 
@@ -256,7 +257,7 @@ public class BasicOperation {
     }
 
 
-    static public ArrayList<Do> UserSelect(String type, String energyType, double minprice, double maxprice, String sortBy, String sortOrder) {
+    public static ArrayList<Do> UserSelect(String type, String energyType, double minprice, double maxprice, String sortBy, String sortOrder) {
         // 设置默认的价格范围
         if (minprice == -1) minprice = 0;
         if (maxprice == -1) maxprice = Double.MAX_VALUE;
@@ -364,3 +365,4 @@ public class BasicOperation {
 
 
 }
+

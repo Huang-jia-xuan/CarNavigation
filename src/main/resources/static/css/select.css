@@ -231,7 +231,7 @@ body {
     right: 10px;
     z-index: 99; /* 确保按钮在最上层 */
     border: none;
-    outline: none; ]9
+    outline: none;
     background-color: #555;
     color: white;
     cursor: pointer;
