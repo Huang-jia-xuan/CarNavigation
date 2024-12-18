@@ -6,8 +6,8 @@ import java.sql.*;
 import java.util.ArrayList;
 
 public class recommend_car{
-    private static final String URL = "jdbc:mysql://localhost:3306/cardb"; // 数据库URL
-    private static final String USER = "root";  // 数据库用户名
+    private static final String URL = "jdbc:mysql://172.20.0.140:3306/cardb"; // 数据库URL
+    private static final String USER = "huangjiaxuan";  // 数据库用户名
     private static final String PASSWORD = "root";  // 数据库密码
 
 

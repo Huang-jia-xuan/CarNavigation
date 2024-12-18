@@ -51,7 +51,7 @@ document.getElementById("searchButton").addEventListener("click", function() {
     };
     console.log(JSON.stringify(queryParams));
     // 发起请求到后端
-    fetch('/query', {
+    fetch('http://127.0.0.1:10009/query', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'

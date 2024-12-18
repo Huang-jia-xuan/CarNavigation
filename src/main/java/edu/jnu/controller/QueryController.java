@@ -8,6 +8,7 @@ import com.alibaba.fastjson2.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -17,6 +18,7 @@ import java.util.ArrayList;
 
 @RestController
 @Slf4j
+@CrossOrigin
 public class QueryController {
     @Autowired
     private VehicleQueryService vehicleQueryService;
@@ -26,12 +28,8 @@ public class QueryController {
         JSONObject jsonObject = JSONObject.parseObject(jsonString);
         VehicleQueryDTO vehicleQueryDTO = VehicleQueryService.parseFromJson(jsonObject);
         ArrayList<Do> result = vehicleQueryService.queryVehicleFromDataBase(vehicleQueryDTO);
-        if(!result.isEmpty()){
-            return ResponseEntity.ok().body(result);
-        }
-        else{
-            return ResponseEntity.noContent().build();
-        }
+        return ResponseEntity.ok().body(result);
+
     }
     @PostMapping("/queryById")
     public ResponseEntity<Do> queryVehicleById(@RequestBody String jsonString){
