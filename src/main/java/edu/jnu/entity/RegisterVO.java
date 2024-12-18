@@ -18,12 +18,12 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 public class RegisterVO {
-    private String id;
+    private int id;
     private String name;
     private String password;
     private String role;
     public RegisterVO(JSONObject jsonObject) {
-        this.id = jsonObject.getString("id");
+        this.id = jsonObject.getIntValue("id",0);
         this.name = jsonObject.getString("name");
         this.password = jsonObject.getString("email");
         this.role = jsonObject.getString("role");

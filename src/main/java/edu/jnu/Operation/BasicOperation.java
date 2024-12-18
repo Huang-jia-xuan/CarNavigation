@@ -12,8 +12,8 @@ import java.util.Set;
 
 public class BasicOperation {
 
-    private static final String URL = "jdbc:mysql://localhost:3306/cardb";
-    private static final String USER = "root";
+    private static final String URL = "jdbc:mysql://172.20.0.140:3306/cardb";
+    private static final String USER = "huangjiaxuan";
     private static final String PASSWORD = "root";
 
 
@@ -21,7 +21,7 @@ public class BasicOperation {
 
     private Connection getConnection() throws SQLException {
         // 连接数据库的代码（你可以根据你的数据库连接设置修改）
-        return DriverManager.getConnection("jdbc:mysql://localhost:3306/cardb", "root", "root");
+        return DriverManager.getConnection("jdbc:mysql://172.20.0.140:3306/cardb", "huangjiaxuan", "root");
     }
 
     public void insertIntoUser(int id, String username, String password) {
@@ -53,7 +53,7 @@ public class BasicOperation {
                 System.out.println("User数据插入成功！");
 
                 // 创建 MySQL 用户
-                String createUserSql = "CREATE USER ?@'localhost' IDENTIFIED BY ?";
+                String createUserSql = "CREATE USER ?@'172.20.0.140' IDENTIFIED BY ?";
                 try (PreparedStatement createUserStmt = conn.prepareStatement(createUserSql)) {
                     createUserStmt.setString(1, String.valueOf(id));
                     createUserStmt.setString(2, password);
@@ -100,7 +100,7 @@ public class BasicOperation {
                 System.out.println("Admin数据插入成功！");
 
                 // 创建 MySQL 用户
-                String createUserSql = "CREATE USER ?@'localhost' IDENTIFIED BY ?";
+                String createUserSql = "CREATE USER ?@'172.20.0.140' IDENTIFIED BY ?";
                 try (PreparedStatement createUserStmt = conn.prepareStatement(createUserSql)) {
                     createUserStmt.setString(1, String.valueOf(id));  // 将 id 转为 String 作为用户名
                     createUserStmt.setString(2, password);
@@ -110,7 +110,7 @@ public class BasicOperation {
                 }
 
                 // 对创建的用户授予所有权限
-                String grantSql = "GRANT ALL PRIVILEGES ON *.* TO ?@'localhost' WITH GRANT OPTION";
+                String grantSql = "GRANT ALL PRIVILEGES ON *.* TO ?@'172.20.0.140' WITH GRANT OPTION";
                 try (PreparedStatement grantStmt = conn.prepareStatement(grantSql)) {
                     grantStmt.setString(1, String.valueOf(id));  // 使用 id 作为用户名
 
@@ -207,7 +207,7 @@ public class BasicOperation {
 
     public void grant(int admin_id, int user_id, String option) {
         String checkAdminSql = "SELECT 1 FROM admin WHERE id = ?";
-        String grantSql = "GRANT " + option + " ON *.* TO ?@'localhost'";
+        String grantSql = "GRANT " + option + " ON *.* TO ?@'172.20.0.140'";
 
         try (Connection conn = getConnection()) {
             // 确认admin_id是否存在
@@ -235,7 +235,7 @@ public class BasicOperation {
 
     public void revoke(int admin_id, int user_id, String option) {
         String checkAdminSql = "SELECT 1 FROM admin WHERE id = ?";
-        String revokeSql = "REVOKE " + option + " ON *.* FROM ?@'localhost'";
+        String revokeSql = "REVOKE " + option + " ON *.* FROM ?@'172.20.0.140'";
 
         try (Connection conn = getConnection()) {
             // 确认admin_id是否存在
@@ -639,7 +639,7 @@ public class BasicOperation {
     }
 
     public boolean hasSelectPrivilege(int userId) {
-        String sql = "SHOW GRANTS FOR ?@'localhost'";
+        String sql = "SHOW GRANTS FOR ?@'172.20.0.140'";
         try (Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
@@ -661,7 +661,7 @@ public class BasicOperation {
     }
 
     public boolean hasInsertPrivilege(int userId) {
-        String sql = "SHOW GRANTS FOR ?@'localhost'";
+        String sql = "SHOW GRANTS FOR ?@'172.20.0.140'";
         try (Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
@@ -681,7 +681,7 @@ public class BasicOperation {
     }
 
     public boolean hasUpdatePrivilege(int userId) {
-        String sql = "SHOW GRANTS FOR ?@'localhost'";
+        String sql = "SHOW GRANTS FOR ?@'172.20.0.140'";
         try (Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
@@ -701,7 +701,7 @@ public class BasicOperation {
     }
 
     public boolean hasDeletePrivilege(int userId) {
-        String sql = "SHOW GRANTS FOR ?@'localhost'";
+        String sql = "SHOW GRANTS FOR ?@'172.20.0.140'";
         try (Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
 

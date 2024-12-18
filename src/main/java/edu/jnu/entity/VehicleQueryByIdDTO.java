@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class VehicleQueryByIdDTO {
+    private int userId;
     private int id;
     private String type;
     private String energyType;
