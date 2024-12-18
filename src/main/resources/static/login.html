@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>用户登录</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #fcf29d;
+        }
+        .login-container {
+            background-color: #fdf181;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2), 0 6px 20px rgba(0, 0, 0, 0.19);
+            padding: 20px;
+            border-radius: 8px;
+            width: 300px;
+            text-align: center;
+        }
+        .login-container input {
+            width: 250px;
+            margin-bottom: 10px;
+            padding: 8px;
+            font-size: 14px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        .login-container button {
+            width: 100%;
+            padding: 10px;
+            background-color: #fdec26;
+            box-shadow: 0 4px 4px rgba(0, 0, 0, 0.2), 0 3px 3px rgba(0, 0, 0, 0.19);
+            color: black;
+            font-size: 16px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .login-container button:hover {
+            background-color: #0056b3;
+        }
+        .message {
+            margin-top: 10px;
+            font-size: 14px;
+        }
+        .navbar {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  background-color: #fff8be;
+  color: rgb(255, 255, 255);
+  border-bottom: 2px solid #000;
+  position: fixed;
+  width: 100%;
+  top: 60px;
+  z-index: 999;
+}
+
+.navbar ul {
+  list-style-type: none;
+}
+
+.navbar li {
+  display: inline;
+  margin-right: 60px;
+}
+
+.navbar a {
+  text-decoration: none;
+  color: rgb(0, 0, 0);
+}
+
+/* 下拉菜单样式 */
+.dropdown1, .dropdown2, .dropdown3, .dropdown4 {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-content {
+  display: block;
+  position: absolute;
+  right: -60px;
+  background-color: #fff8be;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  border-radius: 8px;
+  z-index: 1;
+  top: 100%;
+  margin-top: 20px;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.5s ease, visibility 0.5s ease;
+}
+
+.dropdown1:hover .dropdown-content,
+.dropdown2:hover .dropdown-content,
+.dropdown3:hover .dropdown-content,
+.dropdown4:hover .dropdown-content {
+  display: block;
+  opacity: 1;
+  visibility: visible;
+}
+
+.dropdown-content a {
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+  text-align: center;
+  transition: background-color 0.3s ease, font-weight 0.3s ease, color 0.3s ease;
+}
+
+.dropdown-content a:hover {
+  font-weight: bold;
+  color: #333;
+}
+.site-name {
+  text-align: center;
+  font-size: 2em;
+  margin-bottom: 10px;
+  background-color: #fffad1;
+  color: rgb(0, 0, 0);
+  padding-bottom: 10px;
+  padding-top: 10px;
+  position: fixed;
+  width: 100%;
+  top: 0;
+  z-index: 1000;
+}
+    </style>
+</head>
+<body>
+<div class="site-name">汽 车 导 航 网</div>
+    <div class="navbar">
+    <ul>
+        <li class="dropdown1">
+            <a href="#">车型</a>
+            <div class="dropdown-content">
+                <a href="jiaoche.html">轿车</a>
+                <a href="SUV.html">SUV</a>
+                <a href="MPV.html">MPV</a>
+            </div>
+        </li>
+        <li><a href="index.html">首页</a></li>
+        <li class="dropdown2">
+            <a href="#">销量</a>
+            <div class="dropdown-content">
+                <a href="20-40.html">20-40万</a>
+                <a href="40-80.html">40-80万</a>
+                <a href="up80.html">80万以上</a>
+            </div>
+        </li>
+
+        <li class="dropdown4">
+            <a href="#">用户</a>
+            <div class="dropdown-content">
+                <a href="login.html">用户登录</a>
+                <a href="register.html">用户注册</a>
+            </div>
+        </li>
+    </ul>
+</div>
+
+    <div class="login-container">
+        <h2>用户登录</h2>
+        <input type="text" id="userId" placeholder="输入ID" />
+        <input type="password" id="userPassword" placeholder="输入Password" />
+        <button onclick="loginUser()">登录</button>
+        <div class="message" id="message"></div>
+    </div>
+
+    <script>
+        function loginUser() {
+            const userId = document.getElementById('userId').value;
+            const userPassword = document.getElementById('userPassword').value;
+
+            if (!userId || !userPassword) {
+                document.getElementById('message').textContent = "请填写完整信息！";
+                return;
+            }
+
+            // 这里可以添加请求后台验证登录的代码，例如使用 fetch 发送请求到后端
+            // 假设请求返回一个 success 字段来判断是否登录成功
+            fetch('http://127.0.0.1:10009/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    id: userId,
+                    password: userPassword,
+                }),
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    document.getElementById('message').textContent = "登录成功！";
+                    window.location.href = 'index.html';  // 登录成功后跳转到首页
+                } else {
+                    document.getElementById('message').textContent = "登录失败：" + data.message;
+                }
+            })
+            .catch(error => {
+                document.getElementById('message').textContent = "请求出错，请稍后重试。";
+                console.error('Error:', error);
+            });
+        }
+    </script>
+</body>
+</html>

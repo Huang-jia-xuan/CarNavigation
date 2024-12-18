@@ -1,5 +1,6 @@
 package edu.jnu.controller;
 
+import com.alibaba.fastjson2.JSONObject;
 import edu.jnu.entity.AuthDTO;
 import edu.jnu.entity.RegisterVO;
 import edu.jnu.entity.UserDTO;
@@ -7,6 +8,7 @@ import edu.jnu.service.RegisterService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -20,26 +22,29 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @Slf4j
 @RestController
+@CrossOrigin
 public class RegisterController {
 
     @Autowired
     private RegisterService registerService;
 
     @PostMapping("/register")
-    public ResponseEntity<String> register(@RequestBody RegisterVO registerVO) {
+    public ResponseEntity<String> register(@RequestBody String jsonString) {
+
+        System.out.println(jsonString);
+        JSONObject jsonObject = JSONObject.parseObject(jsonString);
+        RegisterVO registerVO = new RegisterVO(jsonObject);
         // 将用户数据插入数据库
         UserDTO userDTO = UserDTO.builder()
-                .userName(registerVO.getUserName())
-                .userOrganization(registerVO.getUserOrganization())
-                .userAddress(registerVO.getUserAddress())
-                .userFileNums(registerVO.getUserFileNums())
+                .name(registerVO.getName())
+                .role(registerVO.getRole())
                 .build();
         if(registerService.isExist(userDTO)){
             return ResponseEntity.badRequest().body("用户已存在");
         }
         // 将用户名和密码写入身份认证表
         AuthDTO authDTO = AuthDTO.builder()
-                .userName(registerVO.getUserName())
+                .userName(registerVO.getName())
                 .password(registerVO.getPassword())
                 .build();
         if (registerService.add(authDTO)) {
