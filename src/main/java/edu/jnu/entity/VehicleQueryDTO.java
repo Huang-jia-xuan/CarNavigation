@@ -15,7 +15,7 @@ public class VehicleQueryDTO {
     private int minPrice;
     private int maxPrice;
     private String sortBy;
-
+    private String sortOrder;
     @Override
     public String toString() {
         return "VehicleSearchCriteria{" +
