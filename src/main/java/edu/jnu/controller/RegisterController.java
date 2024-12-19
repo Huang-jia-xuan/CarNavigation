@@ -31,19 +31,14 @@ public class RegisterController {
     @PostMapping("/register")
     public ResponseEntity<String> register(@RequestBody String jsonString) {
 
-        System.out.println(jsonString);
+
         JSONObject jsonObject = JSONObject.parseObject(jsonString);
+        System.out.println(jsonObject);
         RegisterVO registerVO = new RegisterVO(jsonObject);
         // 将用户数据插入数据库
-        UserDTO userDTO = UserDTO.builder()
-                .name(registerVO.getName())
-                .role(registerVO.getRole())
-                .build();
-        if(registerService.isExist(userDTO)){
-            return ResponseEntity.badRequest().body("用户已存在");
-        }
-        // 将用户名和密码写入身份认证表
         AuthDTO authDTO = AuthDTO.builder()
+                .userId(registerVO.getId())
+                .code("null")
                 .userName(registerVO.getName())
                 .password(registerVO.getPassword())
                 .build();

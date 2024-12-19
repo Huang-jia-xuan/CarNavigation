@@ -44,6 +44,7 @@ public class RegisterService {
      */
     public boolean add(AuthDTO authDTO) {
         BasicOperation basicOperation = new BasicOperation();
+        System.out.println(authDTO);
         basicOperation.register(authDTO.getUserId(), authDTO.getUserName(), authDTO.getPassword(), authDTO.getCode());
         return true;
     }
