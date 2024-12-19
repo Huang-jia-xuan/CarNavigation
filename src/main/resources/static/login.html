@@ -196,14 +196,14 @@
                     password: userPassword,
                 }),
             })
-            .then(response => response.json())
+            .then(response => {
+                if (!response.ok) {
+                throw new Error("请求失败，状态码：" + response.status);
+            }
+                return response.text(); })
             .then(data => {
-                if (data.success) {
-                    document.getElementById('message').textContent = "登录成功！";
+                    document.getElementById('message').textContent = data;
                     window.location.href = 'index.html';  // 登录成功后跳转到首页
-                } else {
-                    document.getElementById('message').textContent = "登录失败：" + data.message;
-                }
             })
             .catch(error => {
                 document.getElementById('message').textContent = "请求出错，请稍后重试。";
