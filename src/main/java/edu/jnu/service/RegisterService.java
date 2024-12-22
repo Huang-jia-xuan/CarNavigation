@@ -1,5 +1,6 @@
 package edu.jnu.service;
 
+import edu.jnu.Operation.BasicOperation;
 import edu.jnu.dao.UserAuthDao;
 import edu.jnu.entity.AuthDTO;
 import edu.jnu.entity.UserAuth;
@@ -31,8 +32,9 @@ public class RegisterService {
 //    private AddUserService addUserService;
 
     public boolean isExist(UserDTO tmpUser) {
-        UserAuth opUser = userAuthDao.findByUserName(tmpUser.getUserName());
-        return opUser != null;
+//        UserAuth opUser = userAuthDao.findByUserName(tmpUser.getName());
+//        return opUser != null;
+        return false;
     }
 
     /**
@@ -41,18 +43,10 @@ public class RegisterService {
      * @return 是否成功
      */
     public boolean add(AuthDTO authDTO) {
-        UserAuth userAuth = UserAuth.builder()
-                .userName(authDTO.getUserName())
-                .password(authDTO.getPassword())
-                .build();
-        UserAuth auth = userAuthDao.save(userAuth);
-        if (auth.getId() == null) {
-            log.error("注册用户失败,原因是：身份认证数据插入失败");
-            return false;
-        } else {
-            log.info("注册用户成功,用户名:{}", auth.getUserName());
-            return true;
-        }
+        BasicOperation basicOperation = new BasicOperation();
+        System.out.println(authDTO);
+        basicOperation.register(authDTO.getUserId(), authDTO.getUserName(), authDTO.getPassword(), authDTO.getCode());
+        return true;
     }
 
 //    public boolean addUserInfo(UserDTO userDTO) {

@@ -14,6 +14,7 @@ import java.util.List;
 public class VehicleQueryService {
 
     public static VehicleQueryByIdDTO parseFromJson2(JSONObject jsonObject) {
+        int userId = jsonObject.getIntValue("userId", 0);
         int id = jsonObject.getIntValue("id",0);
         // Parse the type list
         String type = jsonObject.getString("type");
@@ -23,7 +24,7 @@ public class VehicleQueryService {
 
 
         // Create and return VehicleSearchCriteria object
-        return new VehicleQueryByIdDTO(id,type,energyType);
+        return new VehicleQueryByIdDTO(userId,id,type,energyType);
     }
 
     public static VehicleQueryDTO parseFromJson(JSONObject jsonObject) {
@@ -69,6 +70,7 @@ public class VehicleQueryService {
         BasicOperation basicOperation = new BasicOperation();
         return basicOperation.selectCarById(vehicleQueryByIdDTO.getId(),
                 vehicleQueryByIdDTO.getType(),
-                vehicleQueryByIdDTO.getEnergyType());
+                vehicleQueryByIdDTO.getEnergyType(),
+               vehicleQueryByIdDTO.getUserId());
     }
 }

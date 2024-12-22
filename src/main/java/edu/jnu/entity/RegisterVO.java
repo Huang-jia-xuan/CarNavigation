@@ -1,5 +1,6 @@
 package edu.jnu.entity;
 
+import com.alibaba.fastjson2.JSONObject;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -17,9 +18,14 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 public class RegisterVO {
-    private String userName;
+    private int id;
+    private String name;
     private String password;
-    private String userAddress;
-    private String userOrganization;
-    private String userFileNums;
+    private String role;
+    public RegisterVO(JSONObject jsonObject) {
+        this.id = jsonObject.getIntValue("id",0);
+        this.name = jsonObject.getString("name");
+        this.password = jsonObject.getString("email");
+        this.role = jsonObject.getString("role");
+    }
 }

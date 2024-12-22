@@ -1,10 +1,13 @@
 package edu.jnu.controller;
 
+import com.alibaba.fastjson2.JSONObject;
+import edu.jnu.Operation.BasicOperation;
 import edu.jnu.entity.LoginVO;
 import edu.jnu.service.LoginService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -18,20 +21,27 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @Slf4j
+@CrossOrigin
 public class LoginController {
 
     @Autowired
     private LoginService loginService;
 
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody LoginVO loginVO) {
-        String password = loginVO.getPassword();
-        String userName = loginVO.getUserName();
-        if (!loginService.checkPassword(userName, password)) {
-            log.info("用户名或密码错误");
-            return ResponseEntity.badRequest().body("用户名或密码错误");
+    public ResponseEntity<String> login(@RequestBody String jsonString) {
+        JSONObject jsonObject = JSONObject.parseObject(jsonString);
+
+        System.out.println(jsonString);
+        BasicOperation basicOperation = new BasicOperation();
+        int res = basicOperation.login(jsonObject.getInteger("id"), jsonObject.getString("password"));
+        System.out.println(res);
+        if (res == 1) {
+            return ResponseEntity.ok("密码错误");
         }
-        log.info("用户名或密码正确");
-        return ResponseEntity.ok("登陆成功");
+        if (res == 2) {
+            return ResponseEntity.ok("登陆成功");
+
+        }
+        return ResponseEntity.ok("用户不存在");
     }
 }

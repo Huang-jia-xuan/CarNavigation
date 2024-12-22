@@ -18,8 +18,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserDTO {
-    private String userName;
-    private String userAddress;
-    private String userOrganization;
-    private String userFileNums;
+    private String name;
+    private String role;
 }
