@@ -2,6 +2,7 @@ package edu.jnu.controller;
 
 import com.alibaba.fastjson2.JSONObject;
 import edu.jnu.Operation.BasicOperation;
+import edu.jnu.entity.Cookie;
 import edu.jnu.entity.LoginVO;
 import edu.jnu.service.LoginService;
 import lombok.extern.slf4j.Slf4j;
@@ -33,15 +34,21 @@ public class LoginController {
 
         System.out.println(jsonString);
         BasicOperation basicOperation = new BasicOperation();
-        int res = basicOperation.login(jsonObject.getInteger("id"), jsonObject.getString("password"));
-        System.out.println(res);
-        if (res == 1) {
-            return ResponseEntity.ok("密码错误");
+        Cookie userCookie = loginService.checkPassword(jsonObject.getInteger("id"), jsonObject.getString("password"));
+        if (userCookie != null) {
+            return ResponseEntity.ok(userCookie.getValue());
         }
-        if (res == 2) {
-            return ResponseEntity.ok("登陆成功");
-
+        else{
+            return ResponseEntity.ok("登录失败");
         }
-        return ResponseEntity.ok("用户不存在");
+//        System.out.println(res);
+//        if (res == 1) {
+//            return ResponseEntity.ok("密码错误");
+//        }
+//        if (res == 2) {
+//            return ResponseEntity.ok("登陆成功");
+//
+//        }
+//        return ResponseEntity.ok("用户不存在");
     }
 }
