@@ -39,14 +39,20 @@ public class RegisterService {
 
     /**
      * 插入用户身份认证数据
+     *
      * @param authDTO 用户身份认证数据
      * @return 是否成功
      */
     public boolean add(AuthDTO authDTO) {
         BasicOperation basicOperation = new BasicOperation();
-        System.out.println(authDTO);
-        basicOperation.register(authDTO.getUserId(), authDTO.getUserName(), authDTO.getPassword(), authDTO.getCode());
-        return true;
+        try {
+            basicOperation.register(authDTO.getUserId(), authDTO.getUserName(), authDTO.getPassword(), authDTO.getCode());
+            return true;
+        } catch (BasicOperation.UserAlreadyExistsException e) {
+            // 捕获异常并返回 false
+            log.error("用户已存在: " + e.getMessage());
+            return false;
+        }
     }
 
 //    public boolean addUserInfo(UserDTO userDTO) {

@@ -29,23 +29,35 @@ public class RegisterController {
     private RegisterService registerService;
 
     @PostMapping("/register")
-    public ResponseEntity<String> register(@RequestBody String jsonString) {
-
-
+    public ResponseEntity<JSONObject> register(@RequestBody String jsonString) {
         JSONObject jsonObject = JSONObject.parseObject(jsonString);
-        System.out.println(jsonObject);
         RegisterVO registerVO = new RegisterVO(jsonObject);
-        // 将用户数据插入数据库
+
+        // 检查必填字段
+        if (registerVO.getId() == 0 || registerVO.getName() == null || registerVO.getPassword() == null) {
+            JSONObject response = new JSONObject();
+            response.put("message", "缺少必要的字段");
+            return ResponseEntity.badRequest().body(response);
+        }
+
+        // 调用注册服务
         AuthDTO authDTO = AuthDTO.builder()
                 .userId(registerVO.getId())
-                .code("null")
                 .userName(registerVO.getName())
                 .password(registerVO.getPassword())
+                .code(registerVO.getRole())
                 .build();
-        if (registerService.add(authDTO)) {
-            return ResponseEntity.ok("注册成功");
+
+        boolean isRegistered = registerService.add(authDTO);
+
+        JSONObject response = new JSONObject();
+        if (isRegistered) {
+            response.put("message", "注册成功");
+            return ResponseEntity.ok(response);
         } else {
-            return ResponseEntity.badRequest().body("注册失败，可能是网络抖动");
+            // 如果注册失败，返回用户已存在的错误信息
+            response.put("message", "用户ID " + registerVO.getId() + " 已经存在！");
+            return ResponseEntity.badRequest().body(response);
         }
     }
 }

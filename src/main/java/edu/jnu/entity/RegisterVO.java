@@ -25,7 +25,7 @@ public class RegisterVO {
     public RegisterVO(JSONObject jsonObject) {
         this.id = jsonObject.getIntValue("id",0);
         this.name = jsonObject.getString("name");
-        this.password = jsonObject.getString("email");
+        this.password = jsonObject.getString("password");
         this.role = jsonObject.getString("role");
     }
 }

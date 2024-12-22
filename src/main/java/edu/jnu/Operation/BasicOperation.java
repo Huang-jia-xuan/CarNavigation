@@ -158,8 +158,12 @@ public class BasicOperation {
         }
     }
 
-
-    public void register(int userID, String username, String password, String code) {
+    public static class UserAlreadyExistsException extends Exception {
+        public UserAlreadyExistsException(String message) {
+            super(message);
+        }
+    }
+    public void register(int userID, String username, String password, String code) throws UserAlreadyExistsException {
         // 连接数据库
         try (Connection conn = DriverManager.getConnection(URL, USER, PASSWORD)) {
 
@@ -171,16 +175,15 @@ public class BasicOperation {
 
                 try (ResultSet rs = checkStmt.executeQuery()) {
                     if (rs.next()) {
-                        // 如果 userID 已经存在，报错
-                        System.out.println("用户ID " + userID + " 已经存在！");
-                        return;  // 退出注册
+                        // 如果 userID 已经存在，抛出异常
+                        throw new UserAlreadyExistsException("用户ID " + userID + " 已经存在！");
                     }
                 }
             }
 
             // 2. 根据 code 判断是注册为 admin 还是 user
             boolean isAdmin = false;
-            if (code != null && code.matches("[A-Za-z]{3}[0-9]{3}")) {
+            if (code != null && code.matches("admin")) {
                 // 如果 code 格式正确，则注册为 admin
                 isAdmin = true;
             } else {
@@ -200,7 +203,7 @@ public class BasicOperation {
             }
 
         } catch (SQLException e) {
-            System.out.println("注册失败: " + e.getMessage());
+            System.out.println(e.getMessage());
             e.printStackTrace();
         }
     }
