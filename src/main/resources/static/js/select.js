@@ -1,7 +1,3 @@
-import {cookie} from "./index.js"
-function convertPriceToInteger(price) {
-    return Math.round(price * 10000);
-}
 // 获取按钮元素
 const mybutton = document.getElementById("topBtn");
 
@@ -23,6 +19,29 @@ function topFunction() {
     document.body.scrollTop = 0; // For Safari
     document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
 }
+
+// 后台按钮事件监听器
+document.getElementById("adminButton").addEventListener("click", function() {
+    // 检查是否已登录以及用户身份
+    const isLoggedIn = sessionStorage.getItem("isLoggedIn");
+    const userType = sessionStorage.getItem("userType");
+
+    if (isLoggedIn !== "true") {
+        alert("请先登录后再访问后台管理页面！");
+        return;
+    }
+
+    // 如果用户身份不是管理员（admin），则无法访问后台
+    if (userType !== "admin") {
+        alert("您没有权限访问后台管理页面！");
+        return;
+    }
+
+    // 跳转到后台管理页面
+    window.location.href = "admin.html"; // 替换为你的后台管理页面路径
+});
+
+// 查询按钮事件监听器
 document.getElementById("searchButton").addEventListener("click", function() {
     // 获取表单输入值
     let type = document.getElementById("type").value;

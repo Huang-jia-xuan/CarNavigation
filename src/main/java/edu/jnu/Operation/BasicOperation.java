@@ -125,9 +125,10 @@ public class BasicOperation {
             System.out.println("插入失败: " + e.getMessage());
         }
     }
-    public int login(int userID, String password) {
+    public String login(int userID, String password) {
         // 构建 SQL 查询，检查 admin 表和 user 表中是否存在该 userID
-        String checkUserSql = "SELECT password FROM admin WHERE id = ? UNION SELECT password FROM user WHERE id = ?";
+        String checkUserSql = "SELECT password, 'admin' AS userType FROM admin WHERE id = ? "
+                + "UNION SELECT password, 'user' AS userType FROM user WHERE id = ?";
 
         try (Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
              PreparedStatement pstmt = conn.prepareStatement(checkUserSql)) {
@@ -140,23 +141,25 @@ public class BasicOperation {
                 if (rs.next()) {
                     // 说明找到了对应的 userID
                     String storedPassword = rs.getString("password");
+                    String userType = rs.getString("userType");
 
                     // 比较输入的密码与数据库中存储的密码
                     if (password.equals(storedPassword)) {
-                        return 2; // 密码正确，返回 2
+                        return userType;  // 返回 'admin' 或 'user'
                     } else {
-                        return 1; // 密码不正确，返回 1
+                        return "passwordError"; // 密码错误
                     }
                 } else {
                     // 如果没有找到对应的 userID
-                    return 0; // 用户ID不存在，返回 0
+                    return "userNotFound"; // 用户ID不存在
                 }
             }
         } catch (SQLException e) {
             e.printStackTrace();
-            return -1; // 出现数据库异常时返回 -1
+            return "dbError"; // 数据库异常
         }
     }
+
 
     public static class UserAlreadyExistsException extends Exception {
         public UserAlreadyExistsException(String message) {

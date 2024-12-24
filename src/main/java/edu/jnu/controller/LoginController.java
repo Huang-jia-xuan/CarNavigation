@@ -2,7 +2,6 @@ package edu.jnu.controller;
 
 import com.alibaba.fastjson2.JSONObject;
 import edu.jnu.Operation.BasicOperation;
-import edu.jnu.entity.Cookie;
 import edu.jnu.entity.LoginVO;
 import edu.jnu.service.LoginService;
 import lombok.extern.slf4j.Slf4j;
@@ -29,26 +28,29 @@ public class LoginController {
     private LoginService loginService;
 
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody String jsonString) {
+    public ResponseEntity<JSONObject> login(@RequestBody String jsonString) {
         JSONObject jsonObject = JSONObject.parseObject(jsonString);
 
-        System.out.println(jsonString);
         BasicOperation basicOperation = new BasicOperation();
-        Cookie userCookie = loginService.checkPassword(jsonObject.getInteger("id"), jsonObject.getString("password"));
-        if (userCookie != null) {
-            return ResponseEntity.ok(userCookie.getValue());
+        String res = basicOperation.login(jsonObject.getInteger("id"), jsonObject.getString("password"));
+
+        JSONObject response = new JSONObject();
+
+        if ("passwordError".equals(res)) {
+            response.put("success", false);
+            response.put("message", "密码错误");
+            return ResponseEntity.ok(response);
         }
-        else{
-            return ResponseEntity.ok("登录失败");
+        if ("userNotFound".equals(res)) {
+            response.put("success", false);
+            response.put("message", "用户不存在");
+            return ResponseEntity.ok(response);
         }
-//        System.out.println(res);
-//        if (res == 1) {
-//            return ResponseEntity.ok("密码错误");
-//        }
-//        if (res == 2) {
-//            return ResponseEntity.ok("登陆成功");
-//
-//        }
-//        return ResponseEntity.ok("用户不存在");
+
+        // 登录成功，返回用户身份信息（'admin' 或 'user'）
+        response.put("success", true);
+        response.put("message", "登录成功");
+        response.put("userType", res); // 添加用户类型（admin 或 user）
+        return ResponseEntity.ok(response);
     }
 }

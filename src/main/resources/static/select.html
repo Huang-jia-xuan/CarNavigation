@@ -28,6 +28,12 @@
                 <a href="register.html">注册账户</a>
             </div>
         </li>
+        <li id="userInfo" style="display: none; position: relative;">
+            <a href="#">欢迎，<span id="currentUser"></span></a> <!-- 显示当前用户名 -->
+            <div class="dropdown-content">
+                <a href="#" id="logoutBtn">退出登录</a>
+            </div>
+        </li>
     </ul>
 </div>
 
@@ -71,6 +77,7 @@
         <option value="DESC">降序</option>
     </select>
     <button id="searchButton">查询</button>
+    <button id="adminButton">后台</button>
 </div>
 
 <div class="results">
@@ -91,6 +98,24 @@
     <div id="no-results" style="display: none;">没有找到符合条件的车辆。</div>
 </div>
     <button onclick="topFunction()" id="topBtn" title="返回顶部">返回顶部</button>
-    <script src="./js/select.js" type="module"></script>
+    <script src="./js/select.js"></script>
+<script>
+    // 页面加载时检查登录状态
+    window.onload = function() {
+        const isLoggedIn = sessionStorage.getItem('isLoggedIn');  // 获取登录状态
+        if (isLoggedIn === 'true') {
+            const userid = sessionStorage.getItem('userId');  // 获取用户名
+            document.getElementById('currentUser').textContent = userid;  // 显示用户名
+            document.getElementById('userInfo').style.display = 'block';  // 显示用户信息部分
+            document.querySelector('.dropdown4').style.display = 'none';  // 隐藏登录/注册选项
+        }
+    };
+    // 绑定“退出登录”按钮的点击事件
+    document.getElementById('logoutBtn').addEventListener('click', function() {
+        sessionStorage.removeItem('isLoggedIn'); // 清除登录状态
+        sessionStorage.removeItem('userName');  // 清除用户名
+        window.location.href = 'index.html';    // 跳转到登录页面
+    });
+</script>
     </body>
 </html>
