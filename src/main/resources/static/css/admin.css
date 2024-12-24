@@ -263,3 +263,83 @@ body {
     position: relative;
     display: inline-block;
 }
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.4);  /* 半透明背景 */
+    overflow: auto;
+}
+
+/* 弹窗内容 */
+.modal-content {
+    background-color: #fcf29d;
+    margin: 15% auto;  /* 垂直居中，自动水平居中 */
+    padding: 20px;
+    border: 1px solid #888;
+    width: 50%;  /* 弹窗宽度，视需要调整 */
+    box-sizing: border-box;
+    position: relative;
+    border-radius: 8px;
+}
+
+/* 关闭按钮样式 */
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+/* 弹窗的输入框样式 */
+input[type="text"], input[type="number"] {
+    width: 100%;
+    padding: 8px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+/* 添加按钮样式 */
+button {
+    background-color: #fdf181;
+    color: black;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+button:hover {
+    background-color: #dccd66;
+}
+.modal-footer {
+    text-align: center;  /* 居中对齐 */
+    margin-top: 20px;
+}
+/* 去掉输入框右侧的上下箭头 */
+input[type="number"] {
+    -webkit-appearance: none;  /* 针对 Webkit 内核浏览器（Chrome, Safari 等） */
+    -moz-appearance: textfield; /* 针对 Firefox */
+    appearance: textfield;      /* 通用 */
+}
+
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}

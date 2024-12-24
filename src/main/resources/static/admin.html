@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>后台管理</title>
+  <link rel="stylesheet" href="./css/admin.css">
+</head>
+<body>
+<div class="site-name">后 台 管 理 系 统</div>
+<div class="navbar">
+  <ul>
+    <li class="dropdown1">
+      <a href="#">车型</a>
+      <div class="dropdown-content">
+        <a href="jiaoche.html">轿车</a>
+        <a href="SUV.html">SUV</a>
+        <a href="MPV.html">MPV</a>
+      </div>
+    </li>
+    <li><a href="index.html">首页</a></li>
+    <li class="dropdown2">
+      <a href="select.html">查询</a>
+    </li>
+    <li class="dropdown4">
+      <a href="#">登录</a>
+      <div class="dropdown-content">
+        <a href="login.html">账户登录</a>
+        <a href="register.html">注册账户</a>
+      </div>
+    </li>
+    <li id="userInfo" style="display: none; position: relative;">
+      <a href="#">欢迎，<span id="currentUser"></span></a> <!-- 显示当前用户名 -->
+      <div class="dropdown-content">
+        <a href="#" id="logoutBtn">退出登录</a>
+      </div>
+    </li>
+  </ul>
+</div>
+
+<div class="search-form">
+  <label for="type">车型:</label>
+  <select id="type">
+    <option value="">Any</option>
+    <option value="sedan">Sedan</option>
+    <option value="mpv">MPV</option>
+    <option value="suv">SUV</option>
+  </select>
+
+  <label for="energyType">能源类型:</label>
+  <select id="energyType">
+    <option value="">Any</option>
+    <option value="oil">燃油</option>
+    <option value="electric">电动</option>
+  </select>
+
+  <label for="minPrice">最低价格:</label>
+  <div class="price-input-container">
+    <input type="number" id="minPrice" value="0">
+    <span>万</span>
+  </div>
+
+  <label for="maxPrice">最高价格:</label>
+  <div class="price-input-container">
+    <input type="number" id="maxPrice" value="1000">
+    <span>万</span>
+  </div>
+  <label for="sortBy">根据:</label>
+  <select id="sortBy">
+    <option value="">None</option>
+    <option value="price">价格</option>
+    <option value="rating">评分</option>
+  </select>
+  <label for="sortOrder">排序方式:</label>
+  <select id="sortOrder">
+    <option value="">None</option>
+    <option value="ASC">升序</option>
+    <option value="DESC">降序</option>
+  </select>
+  <button id="searchButton">查询</button>
+  <button id="insertCar">增加</button>
+</div>
+<!-- 弹窗 -->
+<div id="addCarModal" class="modal">
+  <div class="modal-content">
+    <span id="closeModal" class="close">&times;</span>
+    <div class="modal-footer">
+    <h2>添加车辆信息</h2>
+    </div>
+    <label for="carImage">车型图片 URL:</label>
+    <input type="text" id="carImage" placeholder="请输入车辆图片 URL">
+
+    <label for="carName">车型名称:</label>
+    <input type="text" id="carName" placeholder="请输入车型名称">
+
+    <label for="carRating">车辆评分:</label>
+    <input type="number" id="carRating" step="0.1" placeholder="请输入车辆评分">
+
+    <label for="carMinPrice">最低价格:</label>
+    <input type="number" id="carMinPrice" placeholder="请输入最低价格">
+
+    <label for="carMaxPrice">最高价格:</label>
+    <input type="number" id="carMaxPrice" placeholder="请输入最高价格">
+
+    <div class="modal-footer">
+      <button id="addCarBtn">添加</button>
+    </div>
+  </div>
+</div>
+
+<div class="results">
+  <h2>查询结果</h2>
+  <table id="resultsTable">
+    <thead>
+    <tr>
+      <th>车型图片</th>
+      <th>车型名称</th>
+      <th>车辆评分</th>
+      <th>最低价格</th>
+      <th>最高价格</th>
+    </tr>
+    </thead>
+    <tbody>
+    </tbody>
+  </table>
+  <div id="no-results" style="display: none;">没有找到符合条件的车辆。</div>
+</div>
+<button onclick="topFunction()" id="topBtn" title="返回顶部">返回顶部</button>
+<script src="./js/admin.js"></script>
+<script>
+  // 页面加载时检查登录状态
+  window.onload = function() {
+    const isLoggedIn = sessionStorage.getItem('isLoggedIn');  // 获取登录状态
+    if (isLoggedIn === 'true') {
+      const userid = sessionStorage.getItem('userId');  // 获取用户名
+      document.getElementById('currentUser').textContent = userid;  // 显示用户名
+      document.getElementById('userInfo').style.display = 'block';  // 显示用户信息部分
+      document.querySelector('.dropdown4').style.display = 'none';  // 隐藏登录/注册选项
+    }
+  };
+  // 绑定“退出登录”按钮的点击事件
+  document.getElementById('logoutBtn').addEventListener('click', function() {
+    sessionStorage.removeItem('isLoggedIn'); // 清除登录状态
+    sessionStorage.removeItem('userName');  // 清除用户名
+    window.location.href = 'index.html';    // 跳转到登录页面
+  });
+  // 退出登录
+  document.getElementById("logoutBtn").addEventListener("click", function() {
+    sessionStorage.removeItem("isLoggedIn");
+    sessionStorage.removeItem("userId");
+    window.location.href = "index.html";
+  });
+</script>
+</body>
+</html>

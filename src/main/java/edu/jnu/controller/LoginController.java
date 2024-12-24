@@ -28,20 +28,29 @@ public class LoginController {
     private LoginService loginService;
 
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody String jsonString) {
+    public ResponseEntity<JSONObject> login(@RequestBody String jsonString) {
         JSONObject jsonObject = JSONObject.parseObject(jsonString);
 
-        System.out.println(jsonString);
         BasicOperation basicOperation = new BasicOperation();
-        int res = basicOperation.login(jsonObject.getInteger("id"), jsonObject.getString("password"));
-        System.out.println(res);
-        if (res == 1) {
-            return ResponseEntity.ok("密码错误");
-        }
-        if (res == 2) {
-            return ResponseEntity.ok("登陆成功");
+        String res = basicOperation.login(jsonObject.getInteger("id"), jsonObject.getString("password"));
 
+        JSONObject response = new JSONObject();
+
+        if ("passwordError".equals(res)) {
+            response.put("success", false);
+            response.put("message", "密码错误");
+            return ResponseEntity.ok(response);
         }
-        return ResponseEntity.ok("用户不存在");
+        if ("userNotFound".equals(res)) {
+            response.put("success", false);
+            response.put("message", "用户不存在");
+            return ResponseEntity.ok(response);
+        }
+
+        // 登录成功，返回用户身份信息（'admin' 或 'user'）
+        response.put("success", true);
+        response.put("message", "登录成功");
+        response.put("userType", res); // 添加用户类型（admin 或 user）
+        return ResponseEntity.ok(response);
     }
 }
