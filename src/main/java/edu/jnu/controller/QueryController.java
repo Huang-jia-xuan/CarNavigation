@@ -27,6 +27,7 @@ public class QueryController {
     public ResponseEntity<ArrayList<Do>> queryVehicle(@RequestBody String jsonString){
         JSONObject jsonObject = JSONObject.parseObject(jsonString);
         VehicleQueryDTO vehicleQueryDTO = VehicleQueryService.parseFromJson(jsonObject);
+        System.out.println(vehicleQueryDTO.getCookie());
         ArrayList<Do> result = vehicleQueryService.queryVehicleFromDataBase(vehicleQueryDTO);
         return ResponseEntity.ok().body(result);
 

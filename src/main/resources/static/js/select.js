@@ -1,4 +1,4 @@
-
+import {cookie} from "./index.js"
 function convertPriceToInteger(price) {
     return Math.round(price * 10000);
 }

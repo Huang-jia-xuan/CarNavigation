@@ -174,11 +174,13 @@
         <div class="message" id="message"></div>
     </div>
 
-    <script>
+    <script type="module">
+        export let cookie = "";
+
         function loginUser() {
             const userId = document.getElementById('userId').value;
             const userPassword = document.getElementById('userPassword').value;
-
+            console.log(cookie.value);
             if (!userId || !userPassword) {
                 document.getElementById('message').textContent = "请填写完整信息！";
                 return;
@@ -203,6 +205,7 @@
                 return response.text(); })
             .then(data => {
                     document.getElementById('message').textContent = data;
+                    cookie = data;
                     window.location.href = 'index.html';  // 登录成功后跳转到首页
             })
             .catch(error => {

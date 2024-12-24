@@ -265,7 +265,17 @@ public class BasicOperation {
     }
 
 
-    public void updateCar(int carid, String carName, Double minPrice, Double maxPrice, Double rating, String image, String type, String energyType, String newtype, String newenergyType, int userId) {
+    public void updateCar(int carid,
+                          String carName,
+                          Double minPrice,
+                          Double maxPrice,
+                          Double rating,
+                          String image,
+                          String type,
+                          String energyType,
+                          String newtype,
+                          String newenergyType,
+                          int userId) {
         // 构建表名
         String tableName = "car_" + type + "_" + energyType;
 

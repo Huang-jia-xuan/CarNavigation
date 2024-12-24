@@ -1,5 +1,4 @@
 
-
 var images = ['your-image-url.jpg', 'another-image-url.jpg', 'third-image-url.jpg'];
 var currentImageIndex = 0;
 
