@@ -10,6 +10,7 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @Slf4j
@@ -20,7 +21,8 @@ public class UpdateVehicleController {
     private VehicleUpdateService vehicleUpdateService;
 
     @PostMapping("/updateVehicle")
-    public ResponseEntity<String> updateVehicle(String jsonString){
+    public ResponseEntity<String> updateVehicle(@RequestBody String jsonString){
+        System.out.println(jsonString);
         JSONObject jsonObject = JSONObject.parseObject(jsonString);
         CarUpdateVO carUpdateVO = VehicleUpdateService.parseFromJson(jsonObject);
         VehicleUpdateService.updateCar(carUpdateVO);

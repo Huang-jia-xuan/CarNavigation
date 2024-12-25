@@ -10,10 +10,10 @@ public class VehicleUpdateService {
     public static CarUpdateVO parseFromJson(JSONObject jsonObject){
         int carId = jsonObject.getIntValue("carId");
         String carName = jsonObject.getString("carName");
-        Double minPrice = jsonObject.getDouble("minPrice");
-        Double maxPrice = jsonObject.getDouble("maxPrice");
-        Double rating = jsonObject.getDouble("rating");
-        String image = jsonObject.getString("image");
+        Double minPrice = jsonObject.getDouble("carMinPrice");
+        Double maxPrice = jsonObject.getDouble("carMaxPrice");
+        Double rating = jsonObject.getDouble("carRating");
+        String image = jsonObject.getString("carImage");
         String type = jsonObject.getString("type");
         String energyType = jsonObject.getString("energyType");
         String newType = jsonObject.getString("newType");
