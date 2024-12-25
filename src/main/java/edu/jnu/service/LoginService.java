@@ -8,6 +8,8 @@ import edu.jnu.entity.UserCache;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.Objects;
 import java.util.UUID;
 /**
  * @作者: 郭梓繁
@@ -30,8 +32,8 @@ public class LoginService {
         if(basicOperation==null){
             basicOperation = new BasicOperation();
         }
-        int res = basicOperation.login(userId, password);
-        if(res==2){
+        String res = basicOperation.login(userId, password);
+        if(Objects.equals(res, "admin") | Objects.equals(res, "user")){
             String cookie = UUID.randomUUID().toString();
             long createTime = System.currentTimeMillis();
             Cookie userCookie = new Cookie(cookie,createTime);
