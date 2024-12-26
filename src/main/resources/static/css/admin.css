@@ -343,3 +343,32 @@ input[type="number"]::-webkit-inner-spin-button {
     -webkit-appearance: none;
     margin: 0;
 }
+
+/*删除，更新操作样式*/
+/* 操作列按钮样式 */
+.delete-btn, .update-btn {
+    padding: 5px 10px;
+    margin: 0 5px;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.delete-btn {
+    background-color: #f44336; /* 红色 */
+    color: white;
+}
+
+.update-btn {
+    background-color: #4CAF50; /* 绿色 */
+    color: white;
+}
+
+.delete-btn:hover {
+    background-color: #d32f2f; /* 深红色 */
+}
+
+.update-btn:hover {
+    background-color: #388E3C; /* 深绿色 */
+}

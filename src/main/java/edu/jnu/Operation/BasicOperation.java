@@ -399,7 +399,7 @@ public class BasicOperation {
                         image != null ? image : currentImage,userId);
 
                 // 删除原记录
-                deleteCar(carid, type, energyType,userId);
+                deleteCar(carName, type, energyType,userId);
             }
 
         } catch (SQLException e) {
@@ -414,16 +414,21 @@ public class BasicOperation {
     public void insertCar(String type, String energyType, String carName, double minPrice, double maxPrice, double rating, String image,int userId) {
         // 构建目标表名
         String tableName = "car_" + type + "_" + energyType;
-        if (!hasInsertPrivilege(userId)) {
-            System.out.println("用户 " + userId + " 没有插入权限！");
-            return;
-        }
+//        if (!hasInsertPrivilege(userId)) {
+//            System.out.println("用户 " + userId + " 没有插入权限！");
+//            return;
+//        }
         // 1. 先检查是否已经存在相同的 car_name
         String checkSQL = "SELECT COUNT(*) FROM " + tableName + " WHERE Car_name = ?";
         try (Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
              PreparedStatement checkStmt = conn.prepareStatement(checkSQL)) {
 
             checkStmt.setString(1, carName); // 设置 car_name 参数
+
+            // 打印完整的 SQL 语句
+            String debugCheckSQL = checkSQL.replace("?", "'" + carName + "'");
+            System.out.println("执行的检查 SQL: " + debugCheckSQL);
+
             try (ResultSet rs = checkStmt.executeQuery()) {
                 if (rs.next() && rs.getInt(1) > 0) {
                     // 如果已经存在该 car_name
@@ -446,7 +451,15 @@ public class BasicOperation {
             pstmt.setDouble(2, minPrice);
             pstmt.setDouble(3, maxPrice);
             pstmt.setDouble(4, rating);
-            pstmt.setString(5, (image != null ? image : null));  // 如果没有提供 image，则插入 NULL
+            pstmt.setString(5, image);
+            // 打印完整的 SQL 语句
+            String debugInsertSQL = sql
+                    .replaceFirst("\\?", "'" + carName + "'")
+                    .replaceFirst("\\?", String.valueOf(minPrice))
+                    .replaceFirst("\\?", String.valueOf(maxPrice))
+                    .replaceFirst("\\?", String.valueOf(rating))
+                    .replaceFirst("\\?", (image != null ? "'" + image + "'" : "NULL"));
+            System.out.println("执行的插入 SQL: " + debugInsertSQL);
 
             int rowsAffected = pstmt.executeUpdate();
             System.out.println("插入成功，影响了 " + rowsAffected + " 行。");
@@ -461,19 +474,25 @@ public class BasicOperation {
 
 
     // 删除旧记录的方法
-    public void deleteCar(int carId, String type, String energyType,int userId) {
+    public void deleteCar(String carName, String type, String energyType, int userId) {
         String tableName = "car_" + type + "_" + energyType;
 
-        if (!hasDeletePrivilege(userId)) {
-            System.out.println("用户 " + userId + " 没有删除权限！");
-            return;
-        }
-        String sql = "DELETE FROM " + tableName + " WHERE Carid = ?";
+        // 检查用户是否有删除权限
+//        if (!hasDeletePrivilege(userId)) {
+//            System.out.println("用户 " + userId + " 没有删除权限！");
+//            return;
+//        }
+
+        String sql = "DELETE FROM " + tableName + " WHERE Car_name = ?";
+
+        // 打印完整的 SQL 语句，用于调试
+        String debugSql = sql.replace("?", "'" + carName + "'");
+        System.out.println("执行的 SQL 语句: " + debugSql);
 
         try (Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
-            pstmt.setInt(1, carId);
+            pstmt.setString(1, carName); // 设置 String 类型参数
             int rowsAffected = pstmt.executeUpdate();
             if (rowsAffected > 0) {
                 System.out.println("删除成功，影响了 " + rowsAffected + " 行。");
@@ -485,6 +504,7 @@ public class BasicOperation {
             e.printStackTrace();
         }
     }
+
 
 
     public Do selectCarById(int carId, String type, String energyType, int userId) {

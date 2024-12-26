@@ -40,7 +40,6 @@
 <div class="search-form">
   <label for="type">车型:</label>
   <select id="type">
-    <option value="">Any</option>
     <option value="sedan">Sedan</option>
     <option value="mpv">MPV</option>
     <option value="suv">SUV</option>
@@ -48,7 +47,6 @@
 
   <label for="energyType">能源类型:</label>
   <select id="energyType">
-    <option value="">Any</option>
     <option value="oil">燃油</option>
     <option value="electric">电动</option>
   </select>
@@ -79,13 +77,15 @@
   <button id="searchButton">查询</button>
   <button id="insertCar">增加</button>
 </div>
+
 <!-- 弹窗 -->
 <div id="addCarModal" class="modal">
   <div class="modal-content">
     <span id="closeModal" class="close">&times;</span>
     <div class="modal-footer">
-    <h2>添加车辆信息</h2>
+      <h2>添加车辆信息</h2>
     </div>
+
     <label for="carImage">车型图片 URL:</label>
     <input type="text" id="carImage" placeholder="请输入车辆图片 URL">
 
@@ -101,11 +101,27 @@
     <label for="carMaxPrice">最高价格:</label>
     <input type="number" id="carMaxPrice" placeholder="请输入最高价格">
 
+    <!-- 新增能源类型选择框 -->
+    <label for="energy_Type">能源类型:</label>
+    <select id="energy_Type">
+      <option value="oil">燃油</option>
+      <option value="electric">电动</option>
+    </select>
+
+    <!-- 新增车型选择框 -->
+    <label for="carType">车型:</label>
+    <select id="carType">
+      <option value="sedan">Sedan</option>
+      <option value="suv">SUV</option>
+      <option value="mpv">MPV</option>
+    </select>
+
     <div class="modal-footer">
       <button id="addCarBtn">添加</button>
     </div>
   </div>
 </div>
+
 
 <div class="results">
   <h2>查询结果</h2>
@@ -117,6 +133,7 @@
       <th>车辆评分</th>
       <th>最低价格</th>
       <th>最高价格</th>
+      <th>车辆操作</th>
     </tr>
     </thead>
     <tbody>
@@ -136,13 +153,7 @@
       document.getElementById('userInfo').style.display = 'block';  // 显示用户信息部分
       document.querySelector('.dropdown4').style.display = 'none';  // 隐藏登录/注册选项
     }
-  };
-  // 绑定“退出登录”按钮的点击事件
-  document.getElementById('logoutBtn').addEventListener('click', function() {
-    sessionStorage.removeItem('isLoggedIn'); // 清除登录状态
-    sessionStorage.removeItem('userName');  // 清除用户名
-    window.location.href = 'index.html';    // 跳转到登录页面
-  });
+  }
   // 退出登录
   document.getElementById("logoutBtn").addEventListener("click", function() {
     sessionStorage.removeItem("isLoggedIn");

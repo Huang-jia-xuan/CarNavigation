@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CarDeleteVO {
-    private int carId;
+    private String carName;
     private String type;
     private String energyType;
     private int userId;

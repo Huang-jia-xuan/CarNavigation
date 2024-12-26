@@ -24,7 +24,7 @@ public class VehicleUpdateService {
     {
         return CarDeleteVO.builder().type(jsonObject.getString("type")).
                 energyType(jsonObject.getString("energyType")).
-                carId(jsonObject.getIntValue("carId")).
+                carName(jsonObject.getString("car_name")).
                 userId(jsonObject.getIntValue("userId")).build();
     }
     public static CarUpdateVO parseFromJson(JSONObject jsonObject){
@@ -60,6 +60,6 @@ public class VehicleUpdateService {
     public static void deleteCar(CarDeleteVO carDeleteVO)
     {
         BasicOperation basicOperation = new BasicOperation();
-        basicOperation.deleteCar(carDeleteVO.getCarId(), carDeleteVO.getType(), carDeleteVO.getEnergyType(), carDeleteVO.getUserId());
+        basicOperation.deleteCar(carDeleteVO.getCarName(), carDeleteVO.getType(), carDeleteVO.getEnergyType(), carDeleteVO.getUserId());
     }
 }
