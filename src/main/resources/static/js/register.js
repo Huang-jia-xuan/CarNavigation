@@ -47,6 +47,7 @@ function registerUser() {
         .then(data => {
             if (data.success) {
                 document.getElementById('message').textContent = "注册成功！";
+                window.location.href = 'index.html';  // 登录成功后跳转到首页
             } else {
                 document.getElementById('message').textContent = data.message;
             }
