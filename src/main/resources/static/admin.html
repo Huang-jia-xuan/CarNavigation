@@ -78,7 +78,7 @@
   <button id="insertCar">增加</button>
 </div>
 
-<!-- 弹窗 -->
+<!-- 增加车辆弹窗 -->
 <div id="addCarModal" class="modal">
   <div class="modal-content">
     <span id="closeModal" class="close">&times;</span>
@@ -118,6 +118,49 @@
 
     <div class="modal-footer">
       <button id="addCarBtn">添加</button>
+    </div>
+  </div>
+</div>
+<!-- 修改车辆弹窗 -->
+<div id="updateCarModal" class="modal">
+  <div class="modal-content">
+    <span id="closeUpdateModal" class="close">&times;</span>
+    <div class="modal-header">
+      <h2>修改车辆信息</h2>
+    </div>
+
+    <label for="updateCarImage">车型图片 URL:</label>
+    <input type="text" id="updateCarImage" placeholder="请输入车辆图片 URL">
+
+    <label for="updateCarName">车型名称:</label>
+    <input type="text" id="updateCarName" placeholder="请输入车型名称">
+
+    <label for="updateCarRating">车辆评分:</label>
+    <input type="number" id="updateCarRating" step="0.1" placeholder="请输入车辆评分">
+
+    <label for="updateCarMinPrice">最低价格:</label>
+    <input type="number" id="updateCarMinPrice" placeholder="请输入最低价格">
+
+    <label for="updateCarMaxPrice">最高价格:</label>
+    <input type="number" id="updateCarMaxPrice" placeholder="请输入最高价格">
+
+    <!-- 能源类型 -->
+    <label for="updateEnergyType">能源类型:</label>
+    <select id="updateEnergyType">
+      <option value="oil">燃油</option>
+      <option value="electric">电动</option>
+    </select>
+
+    <!-- 车型 -->
+    <label for="updateCarType">车型:</label>
+    <select id="updateCarType">
+      <option value="sedan">Sedan</option>
+      <option value="suv">SUV</option>
+      <option value="mpv">MPV</option>
+    </select>
+
+    <div class="modal-footer">
+      <button id="updateCarBtn">修改</button>
     </div>
   </div>
 </div>

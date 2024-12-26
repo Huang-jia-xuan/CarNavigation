@@ -117,8 +117,10 @@ document.getElementById("searchButton").addEventListener("click", function() {
                 updateButton.textContent = "修改记录";
                 updateButton.classList.add('update-btn'); // 添加样式类
                 updateButton.addEventListener('click', function () {
-                    updateVehicle(vehicle.car_name); // 调用修改函数
+                    // 调用显示弹窗的函数，并传递当前车辆信息
+                    showUpdateModal(vehicle); // 调用弹窗函数，传递整个车辆对象
                 });
+
 
                 // 将按钮添加到操作列
                 actionCell.appendChild(deleteButton);
@@ -179,43 +181,7 @@ function deleteVehicle(carName) {
     }
 }
 
-//更新函数
-function updateVehicle(carName) {
-    // 弹出输入框，获取新的车辆信息（仅作为示例，可以用更好的方式实现，比如弹窗）
-    const newRating = prompt("请输入新的车辆评分：");
-    const newMinPrice = prompt("请输入新的最低价格：");
-    const newMaxPrice = prompt("请输入新的最高价格：");
 
-    if (newRating && newMinPrice && newMaxPrice) {
-        fetch('http://127.0.0.1:10009/updateVehicle', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                car_name: carName,
-                new_rating: newRating,
-                new_min_price: newMinPrice,
-                new_max_price: newMaxPrice,
-            }),
-        })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    alert("车辆信息更新成功！");
-                    location.reload(); // 刷新页面以更新表格
-                } else {
-                    alert("更新失败：" + data.message);
-                }
-            })
-            .catch(error => {
-                console.error("更新车辆信息时出错：", error);
-                alert("更新失败，请稍后重试。");
-            });
-    } else {
-        alert("输入无效，请重新操作！");
-    }
-}
 
 // 增加车辆
 document.getElementById('addCarBtn').addEventListener('click', function () {
@@ -280,3 +246,94 @@ function insertCar() {
             alert("添加失败，请稍后重试。");
         });
 }
+
+// 更改车辆信息
+// 获取弹窗和按钮
+const updateCarModal = document.getElementById('updateCarModal');
+const closeUpdateModal = document.getElementById('closeUpdateModal');
+const updateCarBtn = document.getElementById('updateCarBtn');
+
+
+// 显示更新弹窗的函数
+function showUpdateModal(vehicle) {
+    const originalType = document.getElementById('carType').value;
+    const originalEnergyType = document.getElementById('energy_Type').value;
+    // 填充当前记录的值
+    document.getElementById('updateCarImage').value = vehicle.image || '';
+    document.getElementById('updateCarName').value = vehicle.car_name || '';
+    document.getElementById('updateCarRating').value = vehicle.rating || '';
+    document.getElementById('updateCarMinPrice').value = vehicle.min_price || '';
+    document.getElementById('updateCarMaxPrice').value = vehicle.max_price || '';
+    document.getElementById('updateEnergyType').value = originalEnergyType || '';
+    document.getElementById('updateCarType').value = originalType || '';
+
+    // 显示弹窗
+    updateCarModal.style.display = 'block';
+
+    // 绑定修改按钮点击事件
+    updateCarBtn.onclick = function () {
+        updateCar(vehicle.car_name,originalType,originalEnergyType); // 传递原始的车辆名称
+    };
+}
+
+// 关闭弹窗
+closeUpdateModal.onclick = function () {
+    updateCarModal.style.display = 'none';
+};
+
+// 修改车辆的函数
+function updateCar(carId, originalType, originalEnergyType) {
+    // 获取用户输入的值
+    const carImage = document.getElementById('updateCarImage').value.trim();
+    const carName = document.getElementById('updateCarName').value.trim();
+    const carRating = parseFloat(document.getElementById('updateCarRating').value.trim());
+    const carMinPrice = parseFloat(document.getElementById('updateCarMinPrice').value.trim());
+    const carMaxPrice = parseFloat(document.getElementById('updateCarMaxPrice').value.trim());
+    const newEnergyType = document.getElementById('updateEnergyType').value;
+    const newType = document.getElementById('updateCarType').value;
+    const userId = sessionStorage.getItem('userId'); // 获取当前登录用户的 ID
+
+    // 验证输入完整性
+    if (!carName || isNaN(carRating) || isNaN(carMinPrice) || isNaN(carMaxPrice) || !newEnergyType || !newType) {
+        alert("请填写完整信息！");
+        return;
+    }
+
+    // 构造请求体
+    const requestBody = {
+        carName: carName,      // 新车型名称（可选更新）
+        minPrice: carMinPrice, // 新最低价格（可选更新）
+        maxPrice: carMaxPrice, // 新最高价格（可选更新）
+        rating: carRating,     // 新评分（可选更新）
+        image: carImage,       // 新图片 URL（可选更新）
+        type: originalType,            // 原始表的车型类型
+        energyType: originalEnergyType, // 原始表的能源类型
+        newType: newType,              // 新车型类型（目标表，若不变则等于原始值）
+        newEnergyType: newEnergyType,  // 新能源类型（目标表，若不变则等于原始值）
+        userId: userId || null             // 用户 ID
+    };
+
+    // 发送 POST 请求到 /updateVehicle
+    fetch('http://127.0.0.1:10009/updateVehicle', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(requestBody),
+    })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert("车辆信息修改成功！");
+                updateCarModal.style.display = 'none'; // 关闭弹窗
+                location.reload(); // 刷新页面
+            } else {
+                alert("修改失败：" + data.message);
+            }
+        })
+        .catch(error => {
+            console.error("修改车辆时出错：", error);
+            alert("修改失败，请稍后重试。");
+        });
+}
+

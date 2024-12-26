@@ -1,12 +1,10 @@
 package edu.jnu.Operation;
 
 import edu.jnu.entity.Do;
-import com.mysql.cj.jdbc.ConnectionImpl;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 
@@ -268,38 +266,44 @@ public class BasicOperation {
     }
 
 
-    public void updateCar(int carid,
-                          String carName,
+    public void updateCar(String carName,
                           Double minPrice,
                           Double maxPrice,
                           Double rating,
                           String image,
                           String type,
                           String energyType,
-                          String newtype,
-                          String newenergyType,
+                          String newType,
+                          String newEnergyType,
                           int userId) {
+        // 打印传入的参数
+        System.out.println("updateCar 方法收到的参数：");
+        System.out.println("carName: " + carName);
+        System.out.println("minPrice: " + minPrice);
+        System.out.println("maxPrice: " + maxPrice);
+        System.out.println("rating: " + rating);
+        System.out.println("image: " + image);
+        System.out.println("type: " + type);
+        System.out.println("energyType: " + energyType);
+        System.out.println("newType: " + newType);
+        System.out.println("newEnergyType: " + newEnergyType);
+        System.out.println("userId: " + userId);
+
         // 构建表名
         String tableName = "car_" + type + "_" + energyType;
 
-        // 检查用户是否有 UPDATE 权限
-        if (!hasUpdatePrivilege(userId)) {
-            System.out.println("用户 " + userId + " 没有 UPDATE 权限！");
-            return;
-        }
-
-        // 1. 获取当前的记录值（包括 carName、minPrice、maxPrice、rating）
+        // 1. 获取当前的记录值
         String currentCarName = null;
         double currentMinPrice = -1.0;
         double currentMaxPrice = -1.0;
         double currentRating = -1.0;
         String currentImage = null;
 
-        String selectSQL = "SELECT Car_name, Min_price, Max_price, rating, image FROM " + tableName + " WHERE Carid = ?";
+        String selectSQL = "SELECT Car_name, Min_price, Max_price, rating, image FROM " + tableName + " WHERE Car_name = ?";
         try (Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
              PreparedStatement pstmt = conn.prepareStatement(selectSQL)) {
-
-            pstmt.setInt(1, carid);  // 设置 Carid 条件
+            System.out.println("Generated SQL: " + selectSQL);
+            pstmt.setString(1, carName); // 设置 CarName 条件
             try (ResultSet rs = pstmt.executeQuery()) {
                 if (rs.next()) {
                     currentCarName = rs.getString("Car_name");
@@ -308,11 +312,10 @@ public class BasicOperation {
                     currentRating = rs.getDouble("rating");
                     currentImage = rs.getString("image");
                 } else {
-                    System.out.println("未找到对应的 Carid: " + carid);
-                    return;  // 如果没有找到记录，则不执行后续操作
+                    System.out.println("未找到对应的 CarName: " + carName);
+                    return; // 如果没有找到记录，则不执行后续操作
                 }
             }
-
         } catch (SQLException e) {
             e.printStackTrace();
             return;
@@ -322,7 +325,6 @@ public class BasicOperation {
         StringBuilder sqlBuilder = new StringBuilder("UPDATE " + tableName + " SET ");
         boolean first = true;
 
-        // 更新字段时，如果字段是 null 或 -1.0，则使用当前值
         if (carName != null) {
             sqlBuilder.append("Car_name = ?");
             first = false;
@@ -351,10 +353,9 @@ public class BasicOperation {
             sqlBuilder.append("image = ?");
         }
 
-        // 添加 WHERE 条件
-        sqlBuilder.append(" WHERE Carid = ?");
+        sqlBuilder.append(" WHERE Car_name = ?");
         String sql = sqlBuilder.toString();
-        System.out.println("Generated SQL: " + sql); // 打印生成的 SQL，方便调试
+        System.out.println("Generated SQL: " + sql);
 
         // 3. 执行更新操作
         try (Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
@@ -362,7 +363,6 @@ public class BasicOperation {
 
             int paramIndex = 1;
 
-            // 设置参数，使用传入的值或保持原值
             if (carName != null) {
                 pstmt.setString(paramIndex++, carName);
             }
@@ -383,29 +383,28 @@ public class BasicOperation {
                 pstmt.setString(paramIndex++, image);
             }
 
-            pstmt.setInt(paramIndex, carid); // 最后设置 Carid 条件
+            pstmt.setString(paramIndex, carName); // 最后设置 WHERE 条件
 
-            // 执行更新操作
             int rowsAffected = pstmt.executeUpdate();
             System.out.println("更新成功，影响了 " + rowsAffected + " 行。");
 
-            // 如果 newtype 和 newenergyType 不为 null，执行插入和删除操作
-            if (newtype != null && newenergyType != null) {
-                // 插入更新后的元组到新的表
-                insertCar(newtype, newenergyType, carName != null ? carName : currentCarName,
+            // 如果 newType 和 newEnergyType 不为 null，先删除再插入
+            if (newType != null && newEnergyType != null) {
+                // 删除原记录
+                deleteCar(carName, type, energyType, userId);
+
+                // 插入更新后的记录到新的表
+                insertCar(newType, newEnergyType, carName != null ? carName : currentCarName,
                         minPrice != -1.0 ? minPrice : currentMinPrice,
                         maxPrice != -1.0 ? maxPrice : currentMaxPrice,
                         rating != -1.0 ? rating : currentRating,
-                        image != null ? image : currentImage,userId);
-
-                // 删除原记录
-                deleteCar(carName, type, energyType,userId);
+                        image != null ? image : currentImage, userId);
             }
-
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
+
 
 
 

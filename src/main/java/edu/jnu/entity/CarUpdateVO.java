@@ -10,7 +10,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CarUpdateVO {
-    int carId;
     String carName;
     Double minPrice;
     Double maxPrice;

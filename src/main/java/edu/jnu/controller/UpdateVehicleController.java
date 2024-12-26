@@ -24,12 +24,29 @@ public class UpdateVehicleController {
     private VehicleUpdateService vehicleUpdateService;
 
     @PostMapping("/updateVehicle")
-    public ResponseEntity<String> updateVehicle(@RequestBody String jsonString){
+    public ResponseEntity<JSONObject> updateVehicle(@RequestBody String jsonString) {
         System.out.println(jsonString);
         JSONObject jsonObject = JSONObject.parseObject(jsonString);
+
+        // 解析 JSON 为 VO 对象
         CarUpdateVO carUpdateVO = VehicleUpdateService.parseFromJson(jsonObject);
-        VehicleUpdateService.updateCar(carUpdateVO);
-        return ResponseEntity.ok().body("完成操作，但是不知道是否成功，因为下一层的代码返回的是void");
+
+        JSONObject response = new JSONObject();
+
+        try {
+            // 调用更新方法
+            VehicleUpdateService.updateCar(carUpdateVO);
+            // 如果执行没有异常，则返回成功
+            response.put("success", true);
+            response.put("message", "车辆信息更新成功！");
+        } catch (Exception e) {
+            // 捕获异常并返回失败消息
+            e.printStackTrace();
+            response.put("success", false);
+            response.put("message", "车辆信息更新失败：" + e.getMessage());
+        }
+
+        return ResponseEntity.ok().body(response);
     }
 
     @PostMapping("/insert")
